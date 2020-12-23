@@ -4,6 +4,7 @@
   "repository": "https://github.com/lollipop-onl/live-coding-theatre.lollipop.onl.git",
   "author": "lollipop-onl <lollipop@simochee.net>",
   "license": "MIT",
+  "private": true,
   "workspaces": [
     "workspaces/*"
   ],
