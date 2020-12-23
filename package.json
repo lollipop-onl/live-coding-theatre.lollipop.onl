@@ -6,5 +6,9 @@
   "license": "MIT",
   "workspaces": [
     "workspaces/*"
-  ]
+  ],
+  "scripts": {
+    "ww": "yarn workspace www",
+    "wf": "yarn workspace functions"
+  }
 }
