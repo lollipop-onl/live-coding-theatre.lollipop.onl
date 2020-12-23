@@ -1,0 +1,10 @@
+{
+  "name": "live-coding-theatre.lollipop.onl",
+  "version": "1.0.0",
+  "repository": "https://github.com/lollipop-onl/live-coding-theatre.lollipop.onl.git",
+  "author": "lollipop-onl <lollipop@simochee.net>",
+  "license": "MIT",
+  "workspaces": [
+    "workspaces/*"
+  ]
+}
