@@ -2,7 +2,8 @@
   "name": "www",
   "version": "1.0.0",
   "scripts": {
-    "dev": "nuxt-ts dev"
+    "dev": "nuxt-ts dev",
+    "lint:css": "stylelint \"**/*.{vue,css}\""
   },
   "dependencies": {
     "@nuxt/typescript-runtime": "^2.0.0",
@@ -24,6 +25,10 @@
     "@types/prettier": "^2.1.6",
     "@types/rfdc": "^1.1.0",
     "postcss-nested": "^4",
+    "stylelint": "^13.8.0",
+    "stylelint-config-recess-order": "^2.3.0",
+    "stylelint-config-standard": "^20.0.0",
+    "stylelint-rscss": "^0.4.0",
     "ts-loader": "^8.0.12",
     "typescript": "^4.1.3"
   },
