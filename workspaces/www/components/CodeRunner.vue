@@ -12,7 +12,7 @@
       <pre
         v-else
         :key="i"
-        class="block -error"
+        class="block Error"
       >
         {{ result.value }}
       </pre>
@@ -123,7 +123,7 @@ export default defineComponent({
     font-family: Fira Code, monospace;
   }
 
-  & > .block.-error {
+  & > .block.Error {
     color: #f00;
     white-space: pre-line;
   }

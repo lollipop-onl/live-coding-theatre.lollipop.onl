@@ -7,7 +7,7 @@
     >
       <option
         value=""
-        style="display: none"
+        style="display: none;"
         selected
         disabled
       >

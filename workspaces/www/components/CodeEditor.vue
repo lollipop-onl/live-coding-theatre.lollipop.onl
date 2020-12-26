@@ -146,10 +146,6 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
 
-  & > .navbar {
-
-  }
-
   & > .field {
     flex: 1 0 auto;
   }
@@ -169,9 +165,9 @@ export default defineComponent({
 
   & > .field,
   & > .highlight > .code {
+    box-sizing: border-box;
     width: 100%;
     height: auto;
-    box-sizing: border-box;
     margin: 0;
     overflow: visible;
     border: none;
@@ -187,29 +183,22 @@ export default defineComponent({
     line-height: 1.5;
   }
 
-  &.Regatures > .field,
-  &.Regatures > .highlight > .code,
-  &.Regatures > .placeholder {
-    font-variant-ligatures: normal;
-  }
-
   & > .field {
-    z-index: 2;
     position: absolute;
     top: 0;
     left: 0;
+    z-index: 2;
     width: 100%;
     height: 100%;
     resize: none;
-    text-fill-color: transparent;
-    -webkit-text-fill-color: transparent;
     background: transparent;
+    -webkit-text-fill-color: transparent;
   }
 
   & > .highlight > .code {
     z-index: 1;
-    width: 100%;
     box-sizing: border-box;
+    width: 100%;
     white-space: pre-wrap;
   }
 
@@ -217,9 +206,15 @@ export default defineComponent({
     position: absolute;
     top: 0;
     left: 0;
-    visibility: hidden;
-    pointer-events: none;
     white-space: pre-wrap;
+    pointer-events: none;
+    visibility: hidden;
+  }
+
+  &.Regatures > .field,
+  &.Regatures > .highlight > .code,
+  &.Regatures > .placeholder {
+    font-variant-ligatures: normal;
   }
 
   & > .field:placeholder-shown ~ .placeholder {
