@@ -1,17 +1,19 @@
 {
-  "hosting": [
-    {
-      "target": "default",
-      "public": "workspaces/www/dist",
-      "ignore": [
-        "firebase.json",
-        "**/.*",
-        "**/node_modules/**"
-      ],
-      "rewrites": [{
+  "database": {
+    "rules": "database.rules"
+  },
+  "hosting": {
+    "public": "workspaces/www/dist",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
         "source": "**",
-        "destination": "/200.html"
-      }]
-    }
-  ]
+        "destination": "/index.html"
+      }
+    ]
+  }
 }
