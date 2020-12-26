@@ -1,7 +1,21 @@
 <template>
   <div class="codeEditor">
-    <div class="codeEditorNavbar navbar">
-      <p>{{ localValue.length }} / {{ maxLength }}</p>
+    <label class="codeEditorField field">
+      <div class="wrapper" :class="{ Regatures: enableRegatures }">
+        <textarea
+          ref="textareaRef"
+          v-model="localValue"
+          class="field"
+          placeholder="abcd1234"
+          @keydown="onKeydown"
+        />
+        <pre v-highlightjs="displayedCode" class="highlight">
+          <code class="code javascript" />
+        </pre>
+        <p class="placeholder">Please fill in</p>
+      </div>
+    </label>
+    <div class="codeEditorFooter footer">
       <BaseSelect v-model="tabSize" :options="tabSizeOptions">
         <template #default>
           <p>Tab: {{ tabSize }}</p>
@@ -12,19 +26,11 @@
           <p>Regatures: {{ checked ? 'enabled' : 'disabled' }}</p>
         </template>
       </BaseCheckbox>
-    </div>
-    <div class="codeEditorField field" :class="{ Regatures: enableRegatures }">
-      <textarea
-        ref="textareaRef"
-        v-model="localValue"
-        class="field"
-        placeholder="abcd1234"
-        @keydown="onKeydown"
-      />
-      <pre v-highlightjs="localValue" class="highlight">
-        <code class="code javascript" />
-      </pre>
-      <p class="placeholder">Please fill in</p>
+      <div class="counter">
+        <div class="length">{{ codeLength }}</div>
+        <div class="vinculum">/</div>
+        <div class="max">{{ maxLength }}</div>
+      </div>
     </div>
   </div>
 </template>
@@ -74,6 +80,15 @@ export default defineComponent({
         emit('input', value);
       },
     });
+    const displayedCode = computed(() => {
+      return localValue.value
+        .split(/\r?\n/)
+        .map((line) => (line.length === 0 ? ' ' : line))
+        .join('\n');
+    });
+    const codeLength = computed(() =>
+      Intl.NumberFormat().format(localValue.value.length)
+    );
 
     const tabSizeOptions = [
       { label: 'タブサイズ： 2', value: 2 },
@@ -137,6 +152,8 @@ export default defineComponent({
       tabSizeOptions,
       enableRegatures,
       localValue,
+      displayedCode,
+      codeLength,
       onKeydown,
     };
   },
@@ -153,31 +170,40 @@ export default defineComponent({
   }
 }
 
-.codeEditorNavbar {
-  display: flex;
-}
-
 .codeEditorField {
-  position: relative;
+  display: block;
+  max-height: 150px;
+  overflow-y: auto;
 
-  & > .highlight {
+  &:focus-within {
+    outline: -webkit-focus-ring-color auto 1px;
+  }
+
+  & > .wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  & > .wrapper > .highlight {
     display: flex;
     margin: 0;
   }
 
-  & > .field,
-  & > .highlight > .code {
+  & > .wrapper > .field,
+  & > .wrapper > .highlight > .code {
     box-sizing: border-box;
     width: 100%;
-    height: auto;
+    height: 100%;
     margin: 0;
-    overflow: visible;
+    overflow: hidden;
     border: none;
   }
 
-  & > .field,
-  & > .highlight > .code,
-  & > .placeholder {
+  & > .wrapper > .field,
+  & > .wrapper > .highlight > .code,
+  & > .wrapper > .placeholder {
     padding: 20px;
     font-family: Fira Code, monospace;
     font-variant-ligatures: none;
@@ -185,7 +211,7 @@ export default defineComponent({
     line-height: 1.5;
   }
 
-  & > .field {
+  & > .wrapper > .field {
     position: absolute;
     top: 0;
     left: 0;
@@ -194,33 +220,59 @@ export default defineComponent({
     height: 100%;
     resize: none;
     background: transparent;
+    outline: none;
     -webkit-text-fill-color: transparent;
   }
 
-  & > .highlight > .code {
+  & > .wrapper > .highlight > .code {
     z-index: 1;
     box-sizing: border-box;
     width: 100%;
+    word-break: break-all;
     white-space: pre-wrap;
   }
 
-  & > .placeholder {
+  & > .wrapper > .placeholder {
     position: absolute;
     top: 0;
     left: 0;
+    word-break: break-all;
     white-space: pre-wrap;
     pointer-events: none;
     visibility: hidden;
   }
 
-  &.Regatures > .field,
-  &.Regatures > .highlight > .code,
-  &.Regatures > .placeholder {
+  & > .wrapper.Regatures > .field,
+  & > .wrapper.Regatures > .highlight > .code,
+  & > .wrapper.Regatures > .placeholder {
     font-variant-ligatures: normal;
   }
 
-  & > .field:placeholder-shown ~ .placeholder {
+  & > .wrapper > .field:placeholder-shown ~ .placeholder {
     visibility: visible;
+  }
+}
+
+.codeEditorFooter {
+  display: flex;
+  border-top: 1px solid #ccc;
+  background: #eee;
+
+  & > .counter {
+    display: flex;
+    align-items: flex-end;
+    margin-left: auto;
+    font-size: 14px;
+  }
+
+  & > .counter > .length {
+    font-size: 1.2em;
+  }
+
+  & > .counter > .vinculum {
+  }
+
+  & > .counter > .max {
   }
 }
 </style>

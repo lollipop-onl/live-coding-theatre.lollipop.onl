@@ -1,14 +1,11 @@
 <template>
   <div class="codeRunner">
     <template v-for="(result, i) in results">
-      <pre
-        v-if="result.type === 'answer'"
-        :key="i"
-        v-highlightjs="result.value"
-        class="block"
-      >
-        <code class="javascript" />
-      </pre>
+      <template v-if="result.type === 'answer'">
+        <pre :key="i" v-highlightjs="result.value" class="block">
+          <code class="javascript" />
+        </pre>
+      </template>
       <pre v-else :key="i" class="block Error">
         {{ result.value }}
       </pre>
@@ -37,13 +34,22 @@ export default defineComponent({
       default: '',
     },
   },
-  setup(props) {
+  setup(props, { root }) {
+    const token = ref('');
     const results = ref<any[]>([]);
     const runnerElement = ref<HTMLIFrameElement>();
 
-    const onMessage = (event: MessageEvent) => {
-      if (event.data.uid === props.uid) {
-        results.value.push(event.data);
+    const onMessage = async (event: MessageEvent): Promise<void> => {
+      if (event.data.token === token.value) {
+        const newResults = results.value
+          .filter((result) => result.token === token.value)
+          .concat(event.data);
+
+        results.value = [];
+
+        await root.$nextTick();
+
+        results.value = newResults;
       }
     };
 
@@ -72,13 +78,17 @@ export default defineComponent({
           document.body.removeChild(runnerElement.value);
         }
 
+        const newToken = `${props.uid}-${Math.random().toString(36).slice(2)}`;
+
+        console.log('generate new token', newToken);
+
         const $iframe = document.createElement('iframe');
         /* eslint-disable no-useless-escape */
         const docs = `
           <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"><\/script>
 
           <script>
-            window.addEventListener('error', (err) => window.parent.postMessage({ type: 'error', value: err.error.toString(), uid: '${props.uid}' }));
+            window.addEventListener('error', (err) => window.parent.postMessage({ type: 'error', value: err.error.toString(), token: '${newToken}' }));
           <\/script>
 
           <script>
@@ -88,7 +98,7 @@ export default defineComponent({
                 val === null ? 'null' :
                 typeof val === 'string' ? \`"\${val}"\` :
                 val.toString();
-              window.parent.postMessage({ type: 'answer', value, uid: '${props.uid}' });
+              window.parent.postMessage({ type: 'answer', value, token: '${newToken}' });
               console.log(val);
             };
             alert = (message) => console.log(\`Alert: \${message}\`);
@@ -107,10 +117,9 @@ export default defineComponent({
         $iframe.style.display = 'none';
         $iframe.setAttribute('target', '_top');
 
-        results.value = [];
-
         document.body.appendChild($iframe);
         runnerElement.value = $iframe;
+        token.value = newToken;
       },
       { immediate: true }
     );
