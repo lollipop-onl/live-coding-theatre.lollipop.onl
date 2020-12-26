@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "nuxt-ts dev",
+    "build": "nuxt-ts build",
     "lint:js": "eslint --ext .ts,.vue .",
     "lint:css": "stylelint \"**/*.{vue,css}\""
   },
