@@ -207,6 +207,74 @@ export default defineComponent({
     margin: 0;
   }
 
+  /* stylelint-disable rscss/class-format, rscss/no-descendant-combinator */
+  & > .wrapper > .highlight ::v-deep {
+    .hljs-comment,
+    .hljs-quote {
+      color: #8e908c;
+    }
+
+    .hljs-deletion,
+    .hljs-name,
+    .hljs-regexp,
+    .hljs-selector-class,
+    .hljs-selector-id,
+    .hljs-tag,
+    .hljs-template-variable,
+    .hljs-variable {
+      color: #c82829;
+    }
+
+    .hljs-built_in,
+    .hljs-builtin-name,
+    .hljs-link,
+    .hljs-literal,
+    .hljs-meta,
+    .hljs-number,
+    .hljs-params,
+    .hljs-type {
+      color: #f5871f;
+    }
+
+    .hljs-attribute {
+      color: #eab700;
+    }
+
+    .hljs-addition,
+    .hljs-bullet,
+    .hljs-string,
+    .hljs-symbol {
+      color: #718c00;
+    }
+
+    .hljs-section,
+    .hljs-title {
+      color: #4271ae;
+    }
+
+    .hljs-keyword,
+    .hljs-selector-tag {
+      color: #8959a8;
+    }
+
+    .hljs {
+      display: block;
+      padding: 0.5em;
+      overflow-x: auto;
+      color: #4d4d4c;
+      background: #fff;
+    }
+
+    .hljs-emphasis {
+      font-style: italic;
+    }
+
+    .hljs-strong {
+      font-weight: 700;
+    }
+  }
+  /* stylelint-enable rscss/class-format, rscss/no-descendant-combinator */
+
   & > .wrapper > .field,
   & > .wrapper > .highlight > .code {
     box-sizing: border-box;
@@ -271,8 +339,8 @@ export default defineComponent({
 
 .codeEditorFooter {
   display: flex;
-  border-top: 1px solid #ccc;
   background: #eee;
+  border-top: 1px solid #ccc;
 
   & > .counter {
     display: flex;

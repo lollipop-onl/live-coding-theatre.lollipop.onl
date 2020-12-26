@@ -36,11 +36,6 @@ export default defineComponent({
     link: [
       {
         rel: 'stylesheet',
-        href:
-          'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/tomorrow.min.css',
-      },
-      {
-        rel: 'stylesheet',
         href: 'https://fonts.googleapis.com/css2?family=Fira+Code&display=swap',
       },
     ],

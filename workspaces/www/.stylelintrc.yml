@@ -4,6 +4,9 @@ extends:
   - stylelint-rscss/config
 rules:
   string-quotes: single
+  selector-pseudo-element-no-unknown:
+    - true,
+    - ignorePseudoElements: [v-deep]
   rscss/class-format:
     - true
     - component: ^[a-z0-9]+[A-Z][a-zA-Z0-9]+$

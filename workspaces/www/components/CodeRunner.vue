@@ -3,7 +3,7 @@
     <template v-for="(result, i) in results">
       <template v-if="result.type === 'answer'">
         <pre :key="i" v-highlightjs="result.value" class="block">
-          <code class="javascript" />
+          <code class="code javascript" />
         </pre>
       </template>
       <pre v-else :key="i" class="block Error">
@@ -133,14 +133,87 @@ export default defineComponent({
 
 <style lang="postcss" scoped>
 .codeRunner {
+  padding: 8px 0;
+  background: #1d1f21;
+
   & > .block {
+    position: relative;
     display: flex;
     font-family: Fira Code, monospace;
+    line-height: 1.5;
   }
+
+  & > .block:not(:first-child) {
+    border-top: 1px solid #454545;
+  }
+
+  /* stylelint-disable rscss/class-format, rscss/no-descendant-combinator */
+  & > .block ::v-deep {
+    .hljs-comment,
+    .hljs-quote {
+      color: #969896;
+    }
+    .hljs-deletion,
+    .hljs-name,
+    .hljs-regexp,
+    .hljs-selector-class,
+    .hljs-selector-id,
+    .hljs-tag,
+    .hljs-template-variable,
+    .hljs-variable {
+      color: #c66;
+    }
+    .hljs-built_in,
+    .hljs-builtin-name,
+    .hljs-link,
+    .hljs-literal,
+    .hljs-meta,
+    .hljs-number,
+    .hljs-params,
+    .hljs-type {
+      color: #de935f;
+    }
+    .hljs-attribute {
+      color: #f0c674;
+    }
+    .hljs-addition,
+    .hljs-bullet,
+    .hljs-string,
+    .hljs-symbol {
+      color: #b5bd68;
+    }
+    .hljs-section,
+    .hljs-title {
+      color: #81a2be;
+    }
+    .hljs-keyword,
+    .hljs-selector-tag {
+      color: #b294bb;
+    }
+    .hljs {
+      display: block;
+      overflow-x: auto;
+      background: #1d1f21;
+      color: #c5c8c6;
+      padding: 0.5em;
+    }
+    .hljs-emphasis {
+      font-style: italic;
+    }
+    .hljs-strong {
+      font-weight: 700;
+    }
+  }
+  /* stylelint-enable rscss/class-format, rscss/no-descendant-combinator */
 
   & > .block.Error {
     color: #f00;
     white-space: pre-line;
+  }
+
+  & > .block > .code {
+    margin: 0 auto;
+    max-width: 640px;
   }
 }
 </style>
