@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "nuxt-ts dev",
+    "lint:js": "eslint --ext .ts,.vue .",
     "lint:css": "stylelint \"**/*.{vue,css}\""
   },
   "dependencies": {
@@ -22,9 +23,14 @@
     "@nuxt/types": "^2.14.12",
     "@nuxt/typescript-build": "^2.0.3",
     "@nuxtjs/composition-api": "^0.17.0",
+    "@nuxtjs/eslint-config-typescript": "^5.0.0",
     "@types/prettier": "^2.1.6",
     "@types/rfdc": "^1.1.0",
+    "eslint": "^7.16.0",
+    "eslint-config-prettier": "^7.1.0",
+    "eslint-plugin-prettier": "^3.3.0",
     "postcss-nested": "^4",
+    "prettier": "^2.2.1",
     "stylelint": "^13.8.0",
     "stylelint-config-recess-order": "^2.3.0",
     "stylelint-config-standard": "^20.0.0",
