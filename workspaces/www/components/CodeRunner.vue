@@ -34,22 +34,20 @@ export default defineComponent({
       default: '',
     },
   },
-  setup(props, { root }) {
+  setup(props) {
     const token = ref('');
     const results = ref<any[]>([]);
     const runnerElement = ref<HTMLIFrameElement>();
 
-    const onMessage = async (event: MessageEvent): Promise<void> => {
+    const onMessage = (event: MessageEvent) => {
       if (event.data.token === token.value) {
-        const newResults = results.value
-          .filter((result) => result.token === token.value)
-          .concat(event.data);
+        if (event.data.type === 'ready') {
+          results.value = [];
 
-        results.value = [];
+          return;
+        }
 
-        await root.$nextTick();
-
-        results.value = newResults;
+        results.value.push(event.data);
       }
     };
 
@@ -80,8 +78,6 @@ export default defineComponent({
 
         const newToken = `${props.uid}-${Math.random().toString(36).slice(2)}`;
 
-        console.log('generate new token', newToken);
-
         const $iframe = document.createElement('iframe');
         /* eslint-disable no-useless-escape */
         const docs = `
@@ -103,6 +99,10 @@ export default defineComponent({
             };
             alert = (message) => console.log(\`Alert: \${message}\`);
             confirm = (message) => console.log(\`Confirm: \${message}\`);
+          <\/script>
+
+          <script>
+            window.parent.postMessage({ type: 'ready', token: '${newToken}' });
           <\/script>
 
           <script>

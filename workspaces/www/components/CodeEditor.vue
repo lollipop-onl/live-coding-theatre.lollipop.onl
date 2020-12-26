@@ -26,6 +26,7 @@
           <p>Regatures: {{ checked ? 'enabled' : 'disabled' }}</p>
         </template>
       </BaseCheckbox>
+      <button type="button" @click="formatCode">Format code</button>
       <div class="counter">
         <div class="length">{{ codeLength }}</div>
         <div class="vinculum">/</div>
@@ -45,6 +46,8 @@ import {
 } from '@nuxtjs/composition-api';
 // @ts-expect-error
 import tabOverride from 'taboverride';
+import prettier from 'prettier/standalone';
+import parserBabel from 'prettier/parser-babel';
 import BaseSelect from '@/components/BaseSelect.vue';
 import BaseCheckbox from '@/components/BaseCheckbox.vue';
 
@@ -112,6 +115,18 @@ export default defineComponent({
       localValue.value = value;
     };
 
+    const formatCode = () => {
+      try {
+        localValue.value = prettier.format(localValue.value, {
+          tabWidth: tabSize.value,
+          parser: 'babel',
+          plugins: [parserBabel],
+        });
+      } catch (err) {
+        // do nothing.
+      }
+    };
+
     watch(tabSize, () => {
       tabOverride.tabSize(tabSize.value);
 
@@ -155,6 +170,7 @@ export default defineComponent({
       displayedCode,
       codeLength,
       onKeydown,
+      formatCode,
     };
   },
 });
