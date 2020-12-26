@@ -1,8 +1,5 @@
 <template>
-  <label
-    class="baseCheckbox"
-    :class="{ 'Disabled': readonly || disabled }"
-  >
+  <label class="baseCheckbox" :class="{ Disabled: readonly || disabled }">
     <input
       type="checkbox"
       v-bind="$attrs"
@@ -13,26 +10,34 @@
       @change="onChangeValue"
       @focus="isFocused = true"
       @blur="isFocused = false"
-    >
-    <slot
-      :checked="isChecked"
-      :focused="isFocused"
     />
+    <slot :checked="isChecked" :focused="isFocused" />
   </label>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType, ref } from '@nuxtjs/composition-api';
+import {
+  computed,
+  defineComponent,
+  PropType,
+  ref,
+} from '@nuxtjs/composition-api';
 
 export default defineComponent({
   name: 'BaseCheckbox',
   inheritAttrs: false,
+  model: {
+    prop: 'model',
+  },
   props: {
     model: {
       type: [Array, Boolean] as PropType<any[] | boolean>,
       required: true,
     },
-    value: {},
+    value: {
+      type: null,
+      default: null,
+    },
     readonly: {
       type: Boolean,
       default: false,
@@ -41,9 +46,6 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
-  },
-  model: {
-    prop: 'model',
   },
   setup(props, { emit }) {
     const isFocused = ref(false);
@@ -75,7 +77,7 @@ export default defineComponent({
       isFocused,
       isChecked,
       onChangeValue,
-    }
+    };
   },
 });
 </script>

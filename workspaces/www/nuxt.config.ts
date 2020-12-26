@@ -11,9 +11,7 @@ const config: NuxtConfig = {
       },
     },
   },
-  plugins: [
-    '@/plugins/libs',
-  ],
+  plugins: ['@/plugins/libs'],
   css: ['reset-css'],
   typescript: {
     typeCheck: false,

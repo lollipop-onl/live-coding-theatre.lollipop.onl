@@ -14,7 +14,6 @@ export const state = (): State => ({
 
 export const getters = {};
 
-
 export const mutations = {
   /** シアター情報を設定 */
   setTheatre(state: State, theatre: any): void {
@@ -34,4 +33,10 @@ export const mutations = {
 
 export const actions = {};
 
-export type TheatreStore = DefineStoreModule<'theatre', State, typeof getters, typeof mutations, typeof actions>;
+export type TheatreStore = DefineStoreModule<
+  'theatre',
+  State,
+  typeof getters,
+  typeof mutations,
+  typeof actions
+>;

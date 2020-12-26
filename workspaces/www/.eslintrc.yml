@@ -6,6 +6,7 @@ extends:
   - '@nuxtjs/eslint-config-typescript'
   - plugin:prettier/recommended
   - prettier/@typescript-eslint
+  - prettier/vue
 parserOptions:
   warnOnUnsupportedTypeScriptVersion: false
 rules:

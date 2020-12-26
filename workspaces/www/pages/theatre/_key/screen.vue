@@ -3,22 +3,13 @@
     <p>screen</p>
     <ol class="grid grid-cols-3">
       <template v-for="(audience, index) in audiences">
-        <li
-          v-if="audience.enteredAt != null"
-          :key="audience.key"
-        >
+        <li v-if="audience.enteredAt != null" :key="audience.key">
           <p>{{ audience.name }}</p>
-          <input type="checkbox" v-model="prettyCodeIndexes" :value="index">
-          <pre
-            v-highlightjs="prettyCode(index, audience.code)"
-            class="flex"
-          >
-            <code class="code-block javascript w-full"></code>
+          <input v-model="prettyCodeIndexes" type="checkbox" :value="index" />
+          <pre v-highlightjs="prettyCode(index, audience.code)" class="flex">
+            <code class="code-block javascript w-full" />
           </pre>
-          <CodeRunner
-            :code="audience.code"
-            :uid="audience.key"
-          />
+          <CodeRunner :code="audience.code" :uid="audience.key" />
         </li>
       </template>
     </ol>

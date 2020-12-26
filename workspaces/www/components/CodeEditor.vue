@@ -2,36 +2,27 @@
   <div class="codeEditor">
     <div class="codeEditorNavbar navbar">
       <p>{{ localValue.length }} / {{ maxLength }}</p>
-      <BaseSelect
-        v-model="tabSize"
-        :options="tabSizeOptions"
-      >
-        <template v-slot>
+      <BaseSelect v-model="tabSize" :options="tabSizeOptions">
+        <template #default>
           <p>Tab: {{ tabSize }}</p>
         </template>
       </BaseSelect>
       <BaseCheckbox v-model="enableRegatures">
-        <template v-slot="{ checked }">
+        <template #default="{ checked }">
           <p>Regatures: {{ checked ? 'enabled' : 'disabled' }}</p>
         </template>
       </BaseCheckbox>
     </div>
-    <div
-      class="codeEditorField field"
-      :class="{ 'Regatures': enableRegatures }"
-    >
+    <div class="codeEditorField field" :class="{ Regatures: enableRegatures }">
       <textarea
         ref="textareaRef"
+        v-model="localValue"
         class="field"
         placeholder="abcd1234"
-        v-model="localValue"
         @keydown="onKeydown"
-      ></textarea>
-      <pre
-        v-highlightjs="localValue"
-        class="highlight"
-      >
-        <code class="code javascript"></code>
+      />
+      <pre v-highlightjs="localValue" class="highlight">
+        <code class="code javascript" />
       </pre>
       <p class="placeholder">Please fill in</p>
     </div>
@@ -39,7 +30,13 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onBeforeMount, ref, watch } from '@nuxtjs/composition-api';
+import {
+  computed,
+  defineComponent,
+  onBeforeMount,
+  ref,
+  watch,
+} from '@nuxtjs/composition-api';
 // @ts-expect-error
 import tabOverride from 'taboverride';
 import BaseSelect from '@/components/BaseSelect.vue';
@@ -65,7 +62,7 @@ export default defineComponent({
       default: Infinity,
     },
   },
-  setup(props, { emit, root }) {
+  setup(props, { emit }) {
     const textareaRef = ref<HTMLTextAreaElement>();
     const tabSize = ref(2);
     const enableRegatures = ref(true);
@@ -98,7 +95,7 @@ export default defineComponent({
       }
 
       localValue.value = value;
-    }
+    };
 
     watch(tabSize, () => {
       tabOverride.tabSize(tabSize.value);
@@ -107,11 +104,16 @@ export default defineComponent({
     });
 
     watch(enableRegatures, () => {
-      localStorage.setItem(LOCALSTORAGE_REGATURES_KEY, `${enableRegatures.value}`);
+      localStorage.setItem(
+        LOCALSTORAGE_REGATURES_KEY,
+        `${enableRegatures.value}`
+      );
     });
 
     onBeforeMount(() => {
-      const savedTabSize = Number(localStorage.getItem(LOCALSTORAGE_TAB_SIZE_KEY));
+      const savedTabSize = Number(
+        localStorage.getItem(LOCALSTORAGE_TAB_SIZE_KEY)
+      );
 
       if (ALLOWED_TAB_SIZES.includes(savedTabSize)) {
         tabSize.value = savedTabSize;

@@ -15,7 +15,6 @@ export const state = (): State => ({
 
 export const getters = {};
 
-
 export const mutations = {
   /** サインインしているユーザーを設定する */
   setSignedInUser(state: State, user: firebase.User | null): void {
@@ -26,9 +25,15 @@ export const mutations = {
     } else {
       Vue.typedDelete(state, 'anonymousUserId');
     }
-  }
+  },
 };
 
 export const actions = {};
 
-export type AuthStore = DefineStoreModule<'auth', State, typeof getters, typeof mutations, typeof actions>;
+export type AuthStore = DefineStoreModule<
+  'auth',
+  State,
+  typeof getters,
+  typeof mutations,
+  typeof actions
+>;

@@ -2,14 +2,19 @@
   <div>
     <div>Theatre manage</div>
     <form @submit.prevent="updateMessage">
-      <textarea type="text" v-model="message" placeholder="message" />
+      <textarea v-model="message" type="text" placeholder="message" />
       <button>update message</button>
     </form>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, useContext } from '@nuxtjs/composition-api';
+import {
+  computed,
+  defineComponent,
+  ref,
+  useContext,
+} from '@nuxtjs/composition-api';
 
 export default defineComponent({
   name: 'TheatreManagePage',

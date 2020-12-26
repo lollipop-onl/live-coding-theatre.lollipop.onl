@@ -1,16 +1,12 @@
 <template>
   <div class="baseSelect">
-    <select class="field"
-      v-bind="$attrs"
+    <select
       v-model="localValue"
+      class="field"
+      v-bind="$attrs"
       @change="onChangeValue"
     >
-      <option
-        value=""
-        style="display: none;"
-        selected
-        disabled
-      >
+      <option value="" style="display: none" selected disabled>
         {{ placeholder }}
       </option>
       <option
@@ -34,7 +30,14 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onBeforeMount, PropType, ref, watch } from '@nuxtjs/composition-api';
+import {
+  computed,
+  defineComponent,
+  onBeforeMount,
+  PropType,
+  ref,
+  watch,
+} from '@nuxtjs/composition-api';
 
 export type SelectOption = {
   label: string | number | boolean;
@@ -46,7 +49,10 @@ export default defineComponent({
   name: 'BaseSelect',
   inheritAttrs: false,
   props: {
-    value: {},
+    value: {
+      type: null,
+      default: null,
+    },
     options: {
       type: Array as PropType<SelectOption[]>,
       required: true,
@@ -58,7 +64,9 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     const activeLabel = ref<string | number | boolean>('');
-      const activeOption = computed(() => props.options.find(({ value }) => value === localValue.value));
+    const activeOption = computed(() =>
+      props.options.find(({ value }) => value === localValue.value)
+    );
     const localValue = computed({
       get(): any {
         return props.value;
@@ -74,7 +82,9 @@ export default defineComponent({
       activeLabel.value = option == null ? props.placeholder : option.label;
     };
 
-    watch([() => props.options, localValue], onChangeValue, { immediate: true });
+    watch([() => props.options, localValue], onChangeValue, {
+      immediate: true,
+    });
 
     onBeforeMount(() => {
       if (activeOption.value) {
@@ -89,7 +99,7 @@ export default defineComponent({
       activeOption,
       localValue,
       onChangeValue,
-    }
+    };
   },
 });
 </script>

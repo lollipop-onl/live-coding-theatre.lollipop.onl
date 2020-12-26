@@ -4,16 +4,12 @@
       <pre
         v-if="result.type === 'answer'"
         :key="i"
-        class="block"
         v-highlightjs="result.value"
+        class="block"
       >
-        <code class="javascript"></code>
+        <code class="javascript" />
       </pre>
-      <pre
-        v-else
-        :key="i"
-        class="block Error"
-      >
+      <pre v-else :key="i" class="block Error">
         {{ result.value }}
       </pre>
     </template>
@@ -21,8 +17,13 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, onUnmounted, ref, useContext, watch } from '@nuxtjs/composition-api';
-import { useStore } from '@/helpers/typed-store';
+import {
+  defineComponent,
+  onMounted,
+  onUnmounted,
+  ref,
+  watch,
+} from '@nuxtjs/composition-api';
 
 export default defineComponent({
   name: 'CodeRunner',
@@ -37,7 +38,6 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const store = useStore();
     const results = ref<any[]>([]);
     const runnerElement = ref<HTMLIFrameElement>();
 
@@ -65,49 +65,55 @@ export default defineComponent({
       removeRunnerElement();
     });
 
-    watch([() => props.code], () => {
-      if (runnerElement.value) {
-        document.body.removeChild(runnerElement.value);
-      }
+    watch(
+      [() => props.code],
+      () => {
+        if (runnerElement.value) {
+          document.body.removeChild(runnerElement.value);
+        }
 
-      const $iframe = document.createElement('iframe');
-      const docs = `
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"><\/script>
+        const $iframe = document.createElement('iframe');
+        /* eslint-disable no-useless-escape */
+        const docs = `
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"><\/script>
 
-        <script>
-          window.addEventListener('error', (err) => window.parent.postMessage({ type: 'error', value: err.error.toString(), uid: '${props.uid}' }));
-        <\/script>
+          <script>
+            window.addEventListener('error', (err) => window.parent.postMessage({ type: 'error', value: err.error.toString(), uid: '${props.uid}' }));
+          <\/script>
 
-        <script>
-          console.answer = (val) => {
-            const value =
-              typeof val === 'undefined' ? 'undefined' :
-              val === null ? 'null' :
-              typeof val === 'string' ? \`"\${val}"\` :
-              val.toString();
-            window.parent.postMessage({ type: 'answer', value, uid: '${props.uid}' });
-            console.log(val);
-          };
-          alert = (message) => console.log(\`Alert: \${message}\`);
-          confirm = (message) => console.log(\`Confirm: \${message}\`);
-        <\/script>
+          <script>
+            console.answer = (val) => {
+              const value =
+                typeof val === 'undefined' ? 'undefined' :
+                val === null ? 'null' :
+                typeof val === 'string' ? \`"\${val}"\` :
+                val.toString();
+              window.parent.postMessage({ type: 'answer', value, uid: '${props.uid}' });
+              console.log(val);
+            };
+            alert = (message) => console.log(\`Alert: \${message}\`);
+            confirm = (message) => console.log(\`Confirm: \${message}\`);
+          <\/script>
 
-        <script>
-          ${props.code}
-        <\/script>
-      `;
+          <script>
+            ${props.code}
+          <\/script>
+        `;
+        /* eslint-enable no-useless-escape */
 
-      $iframe.srcdoc = docs;
-      $iframe.width = '0';
-      $iframe.height = '0';
-      $iframe.style.display = 'none';
-      $iframe.setAttribute('target', '_top');
+        $iframe.srcdoc = docs;
+        $iframe.width = '0';
+        $iframe.height = '0';
+        $iframe.style.display = 'none';
+        $iframe.setAttribute('target', '_top');
 
-      results.value = [];
+        results.value = [];
 
-      document.body.appendChild($iframe);
-      runnerElement.value = $iframe;
-    }, { immediate: true });
+        document.body.appendChild($iframe);
+        runnerElement.value = $iframe;
+      },
+      { immediate: true }
+    );
 
     return {
       results,
