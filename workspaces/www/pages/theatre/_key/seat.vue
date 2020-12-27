@@ -1,16 +1,6 @@
 <template>
   <div class="pageContainer">
-    <p class="message">
-      <span class="container">
-        <span v-if="message" class="text">{{ message }}</span>
-        <img
-          v-else
-          class="logo"
-          src="@/assets/images/logo.svg"
-          alt="Live Coding Theatre"
-        />
-      </span>
-    </p>
+    <TheatreMessage class="message" :message="message" />
     <CodeEditor v-model="sourceCode" class="editor" :max-length="20" />
   </div>
 </template>
@@ -31,6 +21,7 @@ import { useStore } from '@/helpers/typed-store';
 export default defineComponent({
   name: 'TheatreSeatPage',
   components: {
+    TheatreMessage: () => import('@/components/TheatreMessage.vue'),
     CodeEditor: () => import('@/components/CodeEditor.vue'),
   },
   setup() {
@@ -138,100 +129,13 @@ export default defineComponent({
 </script>
 
 <style lang="postcss" scoped>
-@keyframes fade-in {
-  0% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
-  }
-}
-
 .pageContainer {
   display: flex;
   flex-direction: column;
   height: 100vh;
 
   & > .message {
-    position: relative;
-    display: grid;
-    place-items: center;
-    width: 100%;
-    overflow: hidden;
-    background: #191919;
-    background-image: linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0.6),
-      rgba(0, 0, 0, 0)
-    );
     border-bottom: 1px solid #0d0d10;
-  }
-
-  & > .message::before {
-    position: absolute;
-    top: 0;
-    left: 0;
-    display: block;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    content: '';
-    background-image: linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0.2),
-      rgba(0, 0, 0, 0.08),
-      rgba(0, 0, 0, 0)
-    );
-  }
-
-  & > .message > .container {
-    display: grid;
-    place-items: center;
-    width: 100%;
-    max-width: 760px;
-    min-height: 48px;
-    max-height: 120px;
-    padding: 16px 32px;
-    overflow-y: scroll;
-    font-family: Sawarabi Mincho, sans-serif;
-    background-color: #fff;
-    border-top: 16px solid #000;
-    border-right: 20px solid #000;
-    border-bottom: 16px solid #000;
-    border-left: 32px solid #000;
-  }
-
-  & > .message > .container::-webkit-scrollbar {
-    width: 12px;
-    background: #000;
-  }
-
-  & > .message > .container::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  & > .message > .container::-webkit-scrollbar-thumb {
-    visibility: hidden;
-    background: rgba(255, 255, 255, 0.3);
-  }
-
-  & > .message > .container:hover::-webkit-scrollbar-thumb {
-    visibility: visible;
-  }
-
-  & > .message > .container > .text {
-    font-size: 18px;
-    line-height: 1.5;
-    color: #252521;
-    white-space: pre-wrap;
-  }
-
-  & > .message > .container > .logo {
-    display: block;
-    height: 32px;
-    opacity: 0;
-    animation: fade-in 0.4s ease 0.8s forwards;
   }
 
   & > .editor {

@@ -1,58 +1,53 @@
 <template>
-  <div>
-    <p>screen</p>
-    <ol class="grid grid-cols-3">
-      <template v-for="(audience, index) in audiences">
-        <li v-if="audience.enteredAt != null" :key="audience.key">
-          <p>{{ audience.name }}</p>
-          <input v-model="prettyCodeIndexes" type="checkbox" :value="index" />
-          <pre v-highlightjs="prettyCode(index, audience.code)" class="flex">
-            <code class="code-block javascript w-full" />
-          </pre>
-          <CodeRunner :code="audience.code" :uid="audience.key" />
-        </li>
+  <div class="pageContainer">
+    <TheatreMessage class="message" :message="message" />
+    <div class="seats">
+      <template v-for="audience in audiences">
+        <template v-if="audience.enteredAt != null">
+          <CodeCard :key="audience.key" :audience="audience" />
+        </template>
       </template>
-    </ol>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from '@nuxtjs/composition-api';
+import { computed, defineComponent } from '@nuxtjs/composition-api';
 import { useStore } from '@/helpers/typed-store';
 
 export default defineComponent({
   name: 'TheatreScreenPage',
   components: {
-    CodeRunner: () => import('@/components/CodeRunner.vue'),
+    TheatreMessage: () => import('@/components/TheatreMessage.vue'),
+    CodeCard: () => import('@/components/CodeCard.vue'),
   },
   setup() {
     const store = useStore();
-    const prettyCodeIndexes = ref<number[]>([]);
+    const message = computed(() => store.state.theatre.message);
     const audiences = computed(() => store.state.theatre.audiences);
 
-    const prettyCode = async (index: number, code: string): Promise<string> => {
-      const prettier = await import('prettier/standalone');
-      const parserBabel = await import('prettier/parser-babel');
-
-      if (prettyCodeIndexes.value.some((i) => i === index)) {
-        try {
-          return prettier.format(code, {
-            parser: 'babel',
-            plugins: [parserBabel],
-          });
-        } catch (err) {
-          return code;
-        }
-      }
-
-      return code;
-    };
-
     return {
-      prettyCodeIndexes,
+      message,
       audiences,
-      prettyCode,
     };
   },
 });
 </script>
+
+<style lang="postcss" scoped>
+.pageContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #191919;
+
+  & > .message {
+    flex-shrink: 0;
+  }
+
+  & > .seats {
+    flex-grow: 1;
+    overflow-y: auto;
+  }
+}
+</style>
