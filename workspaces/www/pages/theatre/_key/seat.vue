@@ -151,11 +151,12 @@ export default defineComponent({
     width: 100%;
     overflow: hidden;
     background: #191919;
-    background-image: linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0.6),
-      rgba(0, 0, 0, 0)
-    );
+    background-image:
+      linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.6),
+        rgba(0, 0, 0, 0)
+      );
     border-bottom: 1px solid #0d0d10;
   }
 
@@ -168,12 +169,13 @@ export default defineComponent({
     height: 100%;
     pointer-events: none;
     content: '';
-    background-image: linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0.2),
-      rgba(0, 0, 0, 0.08),
-      rgba(0, 0, 0, 0)
-    );
+    background-image:
+      linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.2),
+        rgba(0, 0, 0, 0.08),
+        rgba(0, 0, 0, 0)
+      );
   }
 
   & > .message > .container {
