@@ -136,84 +136,78 @@ export default defineComponent({
   flex-direction: column;
 
   & > .message {
-    position: relative;
-    margin: 18px 0;
-    background-size: auto auto;
-    background-color: #eee;
-    background-image: repeating-linear-gradient(
-      90deg,
-      transparent,
-      transparent 165px,
-      rgba(0, 0, 0, 1) 166px,
-      rgba(0, 0, 0, 1) 175px,
-      transparent 176px
-    );
-    filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.9));
-  }
-
-  & > .message::before,
-  & > .message::after {
-    position: absolute;
-    left: 0;
-    display: block;
-    width: 100%;
-    height: 8px;
-    content: '';
-    background-size: auto auto;
-    background-color: transparent;
-    background-image: repeating-linear-gradient(
-      90deg,
-      transparent,
-      transparent 6px,
-      rgba(0, 0, 0, 1) 6px,
-      rgba(0, 0, 0, 1) 16px
-    );
-  }
-
-  & > .message::before {
-    top: 0;
-    border-top: 8px solid #000;
-    border-bottom: 6px solid #000;
-    transform: translateY(-100%);
-  }
-
-  & > .message::after {
-    bottom: 0;
-    border-top: 4px solid #000;
-    border-bottom: 6px solid #000;
-    transform: translateY(100%);
-  }
-
-  & > .message > .container {
+    background: #333;
+    overflow: hidden;
     display: grid;
     place-items: center;
     width: 100%;
-    max-height: 120px;
-    overflow-y: auto;
+    border-bottom: 1px solid #0d0d10;
   }
 
-  & > .message > .container::-webkit-scrollbar {
-    width: 18px;
-    background: #eee;
+  & > .message > .container {
+    position: relative;
   }
 
-  & > .message > .container::-webkit-scrollbar-track {
-    background: transparent;
-    border-left: 4px solid #000;
+  & > .message > .container::before,
+  & > .message > .container::after {
+    display: block;
+    position: absolute;
+    top: -16px;
+    content: '';
+    height: calc(100% + 32px);
+    width: 480px;
+    background-image: linear-gradient(
+      to left,
+      rgba(0, 0, 0, 0.7),
+      rgba(0, 0, 0, 0)
+    );
   }
 
-  & > .message > .container::-webkit-scrollbar-thumb {
-    opacity: 0;
-    background: rgba(0, 0, 0, 0.3);
+  & > .message > .container::before {
+    transform: translateX(-100%);
+    left: 0;
+  }
+
+  & > .message > .container::after {
+    transform: translateX(100%) rotate(180deg);
+    right: 0;
   }
 
   & > .message > .container > .text {
-    max-width: 640px;
-    padding: 18px;
+    display: block;
+    max-height: 120px;
+    overflow-y: scroll;
+    max-width: 760px;
+    width: 100%;
     line-height: 1.5;
     white-space: pre-wrap;
-    background: #eee;
     font-size: 18px;
+    font-family: Sawarabi Mincho, sans-serif;
+    border-top: 16px solid #000;
+    border-right: 20px solid #000;
+    border-bottom: 16px solid #000;
+    border-left: 32px solid #000;
+    padding: 16px 32px;
+    text-align: center;
+    background: #fff;
+  }
+
+  & > .message > .container > .text::-webkit-scrollbar {
+    width: 12px;
+    background: #000;
+  }
+
+  & > .message > .container > .text::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  & > .message > .container > .text::-webkit-scrollbar-thumb {
+    visibility: hidden;
+    background: rgba(255, 255, 255, 0.3);
+  }
+
+  & > .message > .container > .text:hover::-webkit-scrollbar-thumb {
+    visibility: visible;
   }
 
   & > .editor {

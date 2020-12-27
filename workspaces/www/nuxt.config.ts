@@ -8,6 +8,7 @@ const config: NuxtConfig = {
     postcss: {
       plugins: {
         'postcss-nested': {},
+        'postcss-easing-gradients': {},
       },
     },
   },
