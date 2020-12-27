@@ -1,10 +1,9 @@
 <template>
-  <div>
+  <div class="pageContainer">
     <p v-if="message">
       {{ message }}
     </p>
-    <CodeEditor v-model="sourceCode" />
-    <CodeRunner :code="sourceCode" />
+    <CodeEditor v-model="sourceCode" class="editor" :max-length="1000" />
   </div>
 </template>
 
@@ -19,14 +18,12 @@ import {
   watch,
 } from '@nuxtjs/composition-api';
 import CodeEditor from '@/components/CodeEditor.vue';
-import CodeRunner from '@/components/CodeRunner.vue';
 import { useStore } from '@/helpers/typed-store';
 
 export default defineComponent({
   name: 'TheatreSeatPage',
   components: {
     CodeEditor,
-    CodeRunner,
   },
   setup() {
     const { app, redirect } = useContext();
@@ -128,4 +125,14 @@ export default defineComponent({
 });
 </script>
 
-<style scoped></style>
+<style lang="postcss" scoped>
+.pageContainer {
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+
+  & > .editor {
+    flex-grow: 1;
+  }
+}
+</style>

@@ -15,6 +15,7 @@
         <p class="placeholder">Please fill in</p>
       </div>
     </label>
+    <CodeRunner class="runner" :code="localValue" />
     <div class="codeEditorFooter footer">
       <BaseSelect v-model="tabSize" :options="tabSizeOptions">
         <template #default>
@@ -28,9 +29,8 @@
       </BaseCheckbox>
       <button type="button" @click="formatCode">Format code</button>
       <div class="counter">
-        <div class="length">{{ codeLength }}</div>
-        <div class="vinculum">/</div>
-        <div class="max">{{ maxLength }}</div>
+        <div class="length">{{ formatNumber(localValue.length) }}</div>
+        <div class="max">{{ formatNumber(maxLength) }}</div>
       </div>
     </div>
   </div>
@@ -50,6 +50,7 @@ import prettier from 'prettier/standalone';
 import parserBabel from 'prettier/parser-babel';
 import BaseSelect from '@/components/BaseSelect.vue';
 import BaseCheckbox from '@/components/BaseCheckbox.vue';
+import CodeRunner from '@/components/CodeRunner.vue';
 
 const ALLOWED_TAB_SIZES = [2, 4, 8];
 const LOCALSTORAGE_TAB_SIZE_KEY = 'editor_tabSize';
@@ -60,6 +61,7 @@ export default defineComponent({
   components: {
     BaseSelect,
     BaseCheckbox,
+    CodeRunner,
   },
   props: {
     value: {
@@ -89,9 +91,6 @@ export default defineComponent({
         .map((line) => (line.length === 0 ? ' ' : line))
         .join('\n');
     });
-    const codeLength = computed(() =>
-      Intl.NumberFormat().format(localValue.value.length)
-    );
 
     const tabSizeOptions = [
       { label: 'タブサイズ： 2', value: 2 },
@@ -113,6 +112,10 @@ export default defineComponent({
       }
 
       localValue.value = value;
+    };
+
+    const formatNumber = (value: number): string => {
+      return Intl.NumberFormat().format(value);
     };
 
     const formatCode = () => {
@@ -168,9 +171,9 @@ export default defineComponent({
       enableRegatures,
       localValue,
       displayedCode,
-      codeLength,
       onKeydown,
       formatCode,
+      formatNumber,
     };
   },
 });
@@ -183,22 +186,64 @@ export default defineComponent({
 
   & > .field {
     flex: 1 0 auto;
+    height: 0;
+  }
+
+  & > .runner {
+    max-height: 120px;
+    padding: 8px 0;
+    overflow-y: auto;
+    border-top: 1px solid #0d0d10;
+  }
+
+  & > .runner::-webkit-scrollbar {
+    width: 15px;
+    background: transparent;
+    border-left: red;
+  }
+
+  & > .runner::-webkit-scrollbar-track {
+    background: transparent;
+    border-left: 1px solid #0d0d10;
+  }
+
+  & > .runner::-webkit-scrollbar-thumb {
+    opacity: 0;
+    background: rgba(134, 139, 196, 0.08);
+  }
+
+  & > .runner::-webkit-scrollbar-thumb:hover {
+    background: rgba(134, 139, 196, 0.13);
   }
 }
 
 .codeEditorField {
   display: block;
-  max-height: 150px;
   overflow-y: auto;
 
-  &:focus-within {
-    outline: -webkit-focus-ring-color auto 1px;
+  &::-webkit-scrollbar {
+    width: 15px;
+    background: transparent;
+    border-left: red;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    border-left: 1px solid #eee;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    opacity: 0;
+    background: rgba(25, 25, 25, 0.1);
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(25, 25, 25, 0.25);
   }
 
   & > .wrapper {
     position: relative;
     width: 100%;
-    height: 100%;
     overflow: hidden;
   }
 
@@ -320,6 +365,8 @@ export default defineComponent({
     position: absolute;
     top: 0;
     left: 0;
+    z-index: 1;
+    color: #b5b5b5;
     word-break: break-all;
     white-space: pre-wrap;
     pointer-events: none;
@@ -339,24 +386,30 @@ export default defineComponent({
 
 .codeEditorFooter {
   display: flex;
-  background: #eee;
-  border-top: 1px solid #ccc;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0 16px;
+  font-size: 12px;
+  color: #787c99;
+  background: #16161e;
+  border-top: 1px solid #0d0d10;
 
   & > .counter {
     display: flex;
     align-items: flex-end;
+    padding: 8px 0;
     margin-left: auto;
-    font-size: 14px;
   }
 
   & > .counter > .length {
-    font-size: 1.2em;
-  }
-
-  & > .counter > .vinculum {
   }
 
   & > .counter > .max {
+  }
+
+  & > .counter > .max::before {
+    padding: 0 4px;
+    content: '/';
   }
 }
 </style>

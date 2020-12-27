@@ -1,14 +1,21 @@
 <template>
   <div class="codeRunner">
-    <template v-for="(result, i) in results">
-      <template v-if="result.type === 'answer'">
-        <pre :key="i" v-highlightjs="result.value" class="block">
-          <code class="code javascript" />
+    <template v-if="results.length === 0">
+      <pre class="block Empty">
+        <span class="message">No results.</span>
+      </pre>
+    </template>
+    <template v-else>
+      <template v-for="(result, i) in results">
+        <template v-if="result.type === 'answer'">
+          <pre :key="i" v-highlightjs="result.value" class="block">
+            <code class="code javascript" />
+          </pre>
+        </template>
+        <pre v-else :key="i" class="block Error">
+          <span class="message">{{ result.value }}</span>
         </pre>
       </template>
-      <pre v-else :key="i" class="block Error">
-        {{ result.value }}
-      </pre>
     </template>
   </div>
 </template>
@@ -43,6 +50,12 @@ export default defineComponent({
       if (event.data.token === token.value) {
         if (event.data.type === 'ready') {
           results.value = [];
+
+          return;
+        }
+
+        if (event.data.type === 'error') {
+          results.value = [event.data];
 
           return;
         }
@@ -97,8 +110,9 @@ export default defineComponent({
               window.parent.postMessage({ type: 'answer', value, token: '${newToken}' });
               console.log(val);
             };
-            alert = (message) => console.log(\`Alert: \${message}\`);
-            confirm = (message) => console.log(\`Confirm: \${message}\`);
+            alert = () => { throw new Error('window.alert() の呼び出しは禁止されています。代わりに console.log() を使用してください。') };
+            confirm = () => { throw new Error('window.confirm() の呼び出しは禁止されています。') };
+            prompt = () => { throw new Error('window.prompt() の呼び出しは禁止されています。') };
           <\/script>
 
           <script>
@@ -133,8 +147,7 @@ export default defineComponent({
 
 <style lang="postcss" scoped>
 .codeRunner {
-  padding: 8px 0;
-  background: #1d1f21;
+  background: #1a1b26;
 
   & > .block {
     position: relative;
@@ -193,7 +206,7 @@ export default defineComponent({
     .hljs {
       display: block;
       overflow-x: auto;
-      background: #1d1f21;
+      background: #1a1b26;
       color: #c5c8c6;
       padding: 0.5em;
     }
@@ -206,14 +219,26 @@ export default defineComponent({
   }
   /* stylelint-enable rscss/class-format, rscss/no-descendant-combinator */
 
-  & > .block.Error {
-    color: #f00;
+  & > .block > .message {
+    padding: 0.5em;
+    word-break: break-all;
     white-space: pre-line;
   }
 
-  & > .block > .code {
+  & > .block.Empty {
+    color: #787c99;
+  }
+
+  & > .block.Error {
+    color: #bb616b;
+  }
+
+  & > .block {
+    width: 100%;
+    max-width: 1080px;
+    box-sizing: border-box;
+    padding: 0 16px;
     margin: 0 auto;
-    max-width: 640px;
   }
 }
 </style>
