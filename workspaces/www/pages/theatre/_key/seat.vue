@@ -136,7 +136,7 @@ export default defineComponent({
   flex-direction: column;
 
   & > .message {
-    background: #333;
+    background: #191919;
     overflow: hidden;
     display: grid;
     place-items: center;
@@ -145,36 +145,9 @@ export default defineComponent({
   }
 
   & > .message > .container {
-    position: relative;
-  }
-
-  & > .message > .container::before,
-  & > .message > .container::after {
-    display: block;
-    position: absolute;
-    top: -16px;
-    content: '';
-    height: calc(100% + 32px);
-    width: 480px;
-    background-image: linear-gradient(
-      to left,
-      rgba(0, 0, 0, 0.7),
-      rgba(0, 0, 0, 0)
-    );
-  }
-
-  & > .message > .container::before {
-    transform: translateX(-100%);
-    left: 0;
-  }
-
-  & > .message > .container::after {
-    transform: translateX(100%) rotate(180deg);
-    right: 0;
-  }
-
-  & > .message > .container > .text {
-    display: block;
+    display: grid;
+    place-items: center;
+    min-height: 48px;
     max-height: 120px;
     overflow-y: scroll;
     max-width: 760px;
@@ -188,25 +161,29 @@ export default defineComponent({
     border-bottom: 16px solid #000;
     border-left: 32px solid #000;
     padding: 16px 32px;
-    text-align: center;
-    background: #fff;
+    background-color: #fff;
+    background-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.12),
+      rgba(0, 0, 0, 0)
+    );
   }
 
-  & > .message > .container > .text::-webkit-scrollbar {
+  & > .message > .container::-webkit-scrollbar {
     width: 12px;
     background: #000;
   }
 
-  & > .message > .container > .text::-webkit-scrollbar-track {
+  & > .message > .container::-webkit-scrollbar-track {
     background: transparent;
   }
 
-  & > .message > .container > .text::-webkit-scrollbar-thumb {
+  & > .message > .container::-webkit-scrollbar-thumb {
     visibility: hidden;
     background: rgba(255, 255, 255, 0.3);
   }
 
-  & > .message > .container > .text:hover::-webkit-scrollbar-thumb {
+  & > .message > .container:hover::-webkit-scrollbar-thumb {
     visibility: visible;
   }
 
