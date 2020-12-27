@@ -26,13 +26,12 @@ import {
   watch,
 } from '@nuxtjs/composition-api';
 import { throttle } from 'throttle-debounce';
-import CodeEditor from '@/components/CodeEditor.vue';
 import { useStore } from '@/helpers/typed-store';
 
 export default defineComponent({
   name: 'TheatreSeatPage',
   components: {
-    CodeEditor,
+    CodeEditor: () => import('@/components/CodeEditor.vue'),
   },
   setup() {
     const { app, redirect } = useContext();

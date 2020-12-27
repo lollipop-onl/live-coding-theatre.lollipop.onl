@@ -28,7 +28,7 @@
           src="@/assets/images/icon-lodash.svg"
           alt="Lodash"
         />
-        <span class="text">available</span>
+        <span class="text">4.17.20</span>
       </a>
       <button class="button" type="button" @click="formatCode">
         <img
@@ -71,11 +71,6 @@ import {
 } from '@nuxtjs/composition-api';
 // @ts-expect-error
 import tabOverride from 'taboverride';
-import prettier from 'prettier/standalone';
-import parserBabel from 'prettier/parser-babel';
-import BaseSelect from '@/components/BaseSelect.vue';
-import BaseCheckbox from '@/components/BaseCheckbox.vue';
-import CodeRunner from '@/components/CodeRunner.vue';
 
 const ALLOWED_TAB_SIZES = [2, 4, 8];
 const LOCALSTORAGE_TAB_SIZE_KEY = 'editor_tabSize';
@@ -84,9 +79,9 @@ const LOCALSTORAGE_LEGATURE_KEY = 'editor_legature';
 export default defineComponent({
   name: 'CodeEditor',
   components: {
-    BaseSelect,
-    BaseCheckbox,
-    CodeRunner,
+    BaseSelect: () => import('@/components/BaseSelect.vue'),
+    BaseCheckbox: () => import('@/components/BaseCheckbox.vue'),
+    CodeRunner: () => import('@/components/CodeRunner.vue'),
   },
   props: {
     value: {
@@ -143,7 +138,10 @@ export default defineComponent({
       return Intl.NumberFormat().format(value);
     };
 
-    const formatCode = () => {
+    const formatCode = async (): Promise<void> => {
+      const prettier = await import('prettier/standalone');
+      const parserBabel = await import('prettier/parser-babel');
+
       try {
         localValue.value = prettier.format(localValue.value, {
           tabWidth: tabSize.value,
@@ -219,6 +217,7 @@ export default defineComponent({
 .codeEditor {
   display: flex;
   flex-direction: column;
+  background: #1a1b26;
 
   & > .field {
     flex: 1 0 auto;
@@ -226,7 +225,7 @@ export default defineComponent({
   }
 
   & > .runner {
-    max-height: 120px;
+    max-height: 130px;
     padding: 8px 0;
     overflow-y: auto;
     border-top: 1px solid #0d0d10;
@@ -278,7 +277,9 @@ export default defineComponent({
   & > .wrapper {
     position: relative;
     width: 100%;
+    max-width: 1080px;
     min-height: 100%;
+    margin: 0 auto;
     overflow: hidden;
   }
 
@@ -291,7 +292,7 @@ export default defineComponent({
   & > .wrapper > .highlight ::v-deep {
     .hljs-comment,
     .hljs-quote {
-      color: #8e908c;
+      color: #969896;
     }
 
     .hljs-deletion,
@@ -302,7 +303,7 @@ export default defineComponent({
     .hljs-tag,
     .hljs-template-variable,
     .hljs-variable {
-      color: #c82829;
+      color: #c66;
     }
 
     .hljs-built_in,
@@ -313,36 +314,36 @@ export default defineComponent({
     .hljs-number,
     .hljs-params,
     .hljs-type {
-      color: #f5871f;
+      color: #de935f;
     }
 
     .hljs-attribute {
-      color: #eab700;
+      color: #f0c674;
     }
 
     .hljs-addition,
     .hljs-bullet,
     .hljs-string,
     .hljs-symbol {
-      color: #718c00;
+      color: #b5bd68;
     }
 
     .hljs-section,
     .hljs-title {
-      color: #4271ae;
+      color: #81a2be;
     }
 
     .hljs-keyword,
     .hljs-selector-tag {
-      color: #8959a8;
+      color: #b294bb;
     }
 
     .hljs {
       display: block;
       padding: 0.5em;
       overflow-x: auto;
-      color: #4d4d4c;
-      background: #fff;
+      color: #c5c8c6;
+      background: #1a1b26;
     }
 
     .hljs-emphasis {
@@ -386,6 +387,11 @@ export default defineComponent({
     background: transparent;
     outline: none;
     -webkit-text-fill-color: transparent;
+    caret-color: rgba(255, 255, 255, 0.8);
+  }
+
+  & > .wrapper > .field::selection {
+    background: rgba(255, 255, 255, 0.2);
   }
 
   & > .wrapper > .highlight > .code {
@@ -401,11 +407,12 @@ export default defineComponent({
     top: 0;
     left: 0;
     z-index: 1;
-    color: #b5b5b5;
+    color: rgba(181, 181, 181, 0.5);
     word-break: break-all;
     white-space: pre-wrap;
     pointer-events: none;
-    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.1s ease;
   }
 
   & > .wrapper.Regatures > .field,
@@ -415,7 +422,7 @@ export default defineComponent({
   }
 
   & > .wrapper > .field:placeholder-shown ~ .placeholder {
-    visibility: visible;
+    opacity: 1;
   }
 }
 

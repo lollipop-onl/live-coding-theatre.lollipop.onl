@@ -18,22 +18,22 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from '@nuxtjs/composition-api';
-import prettier from 'prettier/standalone';
-import parserBabel from 'prettier/parser-babel';
-import CodeRunner from '@/components/CodeRunner.vue';
 import { useStore } from '@/helpers/typed-store';
 
 export default defineComponent({
   name: 'TheatreScreenPage',
   components: {
-    CodeRunner,
+    CodeRunner: () => import('@/components/CodeRunner.vue'),
   },
   setup() {
     const store = useStore();
     const prettyCodeIndexes = ref<number[]>([]);
     const audiences = computed(() => store.state.theatre.audiences);
 
-    const prettyCode = (index: number, code: string) => {
+    const prettyCode = async (index: number, code: string): Promise<string> => {
+      const prettier = await import('prettier/standalone');
+      const parserBabel = await import('prettier/parser-babel');
+
       if (prettyCodeIndexes.value.some((i) => i === index)) {
         try {
           return prettier.format(code, {

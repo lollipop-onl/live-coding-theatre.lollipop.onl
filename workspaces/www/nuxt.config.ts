@@ -12,7 +12,7 @@ const config: NuxtConfig = {
       },
     },
   },
-  plugins: ['@/plugins/libs'],
+  plugins: ['@/plugins/libs', '@/plugins/highlightjs'],
   css: ['reset-css'],
   typescript: {
     typeCheck: false,

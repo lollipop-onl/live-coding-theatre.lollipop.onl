@@ -28,8 +28,6 @@ import {
   ref,
   watch,
 } from '@nuxtjs/composition-api';
-import prettier from 'prettier/standalone';
-import parserBabel from 'prettier/parser-babel';
 import { throttle } from 'throttle-debounce';
 
 export default defineComponent({
@@ -49,7 +47,7 @@ export default defineComponent({
     const results = ref<any[]>([]);
     const runnerElement = ref<HTMLIFrameElement>();
 
-    const onMessage = (event: MessageEvent) => {
+    const onMessage = async (event: MessageEvent): Promise<void> => {
       if (event.data.token === token.value) {
         if (event.data.type === 'ready') {
           results.value = [];
@@ -62,6 +60,9 @@ export default defineComponent({
 
           return;
         }
+
+        const prettier = await import('prettier/standalone');
+        const parserBabel = await import('prettier/parser-babel');
 
         try {
           event.data.value = prettier.format(event.data.value, {
@@ -121,7 +122,7 @@ export default defineComponent({
                 val === null ? 'null' :
                 typeof val === 'string' ? \`"\${val}"\` :
                 typeof val === 'object' ? JSON.stringify(val) :
-                typeof val === 'function' && 'VERSION' in val ? \`Lodash version \${_.VERSION}\` :
+                typeof val === 'function' && val.VERSION === _.VERSION ? \`Lodash version \${_.VERSION}\` :
                 val.toString();
               window.parent.postMessage({ type: 'answer', value, token: '${newToken}' });
 
@@ -165,7 +166,7 @@ export default defineComponent({
 
 <style lang="postcss" scoped>
 .codeRunner {
-  background: #1a1b26;
+  background: #16161e;
 
   & > .block {
     position: relative;
@@ -238,7 +239,7 @@ export default defineComponent({
       padding: 0.5em;
       overflow-x: auto;
       color: #c5c8c6;
-      background: #1a1b26;
+      background: #16161e;
     }
 
     .hljs-emphasis {
