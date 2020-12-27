@@ -434,11 +434,11 @@ export default defineComponent({
     justify-content: center;
     padding: 4px 8px;
     color: #787c99;
+    text-decoration: none;
     cursor: pointer;
     background: none;
     border: none;
     outline: none;
-    text-decoration: none;
   }
 
   & > .button:hover,
