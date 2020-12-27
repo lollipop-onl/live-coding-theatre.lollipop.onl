@@ -153,7 +153,9 @@ export default defineComponent({
                 typeof val === 'string' ? \`"\${val}"\` :
                 val.toString();
               window.parent.postMessage({ type: 'answer', value, token: '${newToken}' });
-              console.log(val);
+
+              const output = typeof val === 'string' ? \`"\${val}"\` : val;
+              console.log('%cA.', 'background: #b3204d; font-weight: bold; color: #fff; padding: 2px 4px;', output);
             };
             alert = () => { throw new Error('window.alert() の呼び出しは禁止されています。代わりに console.log() を使用してください。') };
             confirm = () => { throw new Error('window.confirm() の呼び出しは禁止されています。') };
