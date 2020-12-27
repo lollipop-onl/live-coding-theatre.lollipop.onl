@@ -139,6 +139,16 @@ export default defineComponent({
 </script>
 
 <style lang="postcss" scoped>
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
 .pageContainer {
   display: flex;
   flex-direction: column;
@@ -223,6 +233,8 @@ export default defineComponent({
   & > .message > .container > .logo {
     display: block;
     height: 32px;
+    opacity: 0;
+    animation: fade-in 0.4s ease 0.8s forwards;
   }
 
   & > .editor {
