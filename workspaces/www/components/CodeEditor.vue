@@ -1,7 +1,7 @@
 <template>
   <div class="codeEditor">
     <label class="codeEditorField field">
-      <div class="wrapper" :class="{ Regatures: enableRegatures }">
+      <div class="wrapper" :class="{ Regatures: enableLigature }">
         <textarea
           ref="textareaRef"
           v-model="localValue"
@@ -20,19 +20,30 @@
       <BaseSelect v-model="tabSize" class="button" :options="tabSizeOptions">
         <template #default> Tab: {{ tabSize }} </template>
       </BaseSelect>
-      <BaseCheckbox v-model="enableRegatures" class="button">
+      <BaseCheckbox v-model="enableLigature" class="button">
         <template #default="{ checked }">
-          Regatures: {{ checked ? 'enabled' : 'disabled' }}
+          Ligature: {{ checked ? 'ON' : 'OFF' }}
         </template>
       </BaseCheckbox>
       <button class="button" type="button" @click="formatCode">
-        Format code
+        <img
+          class="icon"
+          src="@/assets/images/icon-pretty.svg"
+          alt="Format code"
+        />
+        <span class="text"> Format </span>
       </button>
-      <button class="button -clear" type="button" @click="clearCode">🗑</button>
       <div class="counter">
         <div class="length">{{ formatNumber(localValue.length) }}</div>
-        <div class="max">{{ formatNumber(maxLength) }}</div>
+        <!-- <div class="max">{{ formatNumber(maxLength) }}</div> -->
       </div>
+      <button class="button" type="button" @click="clearCode">
+        <img
+          class="icon"
+          src="@/assets/images/icon-delete.svg"
+          alt="Clear code"
+        />
+      </button>
     </div>
   </div>
 </template>
@@ -55,7 +66,7 @@ import CodeRunner from '@/components/CodeRunner.vue';
 
 const ALLOWED_TAB_SIZES = [2, 4, 8];
 const LOCALSTORAGE_TAB_SIZE_KEY = 'editor_tabSize';
-const LOCALSTORAGE_REGATURES_KEY = 'editor_regatures';
+const LOCALSTORAGE_LEGATURE_KEY = 'editor_legature';
 
 export default defineComponent({
   name: 'CodeEditor',
@@ -77,7 +88,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const textareaRef = ref<HTMLTextAreaElement>();
     const tabSize = ref(2);
-    const enableRegatures = ref(true);
+    const enableLigature = ref(true);
     const localValue = computed({
       get(): string {
         return props.value;
@@ -147,10 +158,10 @@ export default defineComponent({
       localStorage.setItem(LOCALSTORAGE_TAB_SIZE_KEY, `${tabSize.value}`);
     });
 
-    watch(enableRegatures, () => {
+    watch(enableLigature, () => {
       localStorage.setItem(
-        LOCALSTORAGE_REGATURES_KEY,
-        `${enableRegatures.value}`
+        LOCALSTORAGE_LEGATURE_KEY,
+        `${enableLigature.value}`
       );
     });
 
@@ -167,10 +178,10 @@ export default defineComponent({
     });
 
     onBeforeMount(() => {
-      const savedRegatures = localStorage.getItem(LOCALSTORAGE_REGATURES_KEY);
+      const savedLegature = localStorage.getItem(LOCALSTORAGE_LEGATURE_KEY);
 
-      if (savedRegatures === 'false') {
-        enableRegatures.value = false;
+      if (savedLegature === 'false') {
+        enableLigature.value = false;
       }
     });
 
@@ -179,7 +190,7 @@ export default defineComponent({
       textareaRef,
       tabSize,
       tabSizeOptions,
-      enableRegatures,
+      enableLigature,
       localValue,
       displayedCode,
       onKeydown,
@@ -404,12 +415,14 @@ export default defineComponent({
   border-top: 1px solid #0d0d10;
 
   & > .button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border: none;
     background: none;
     color: #787c99;
     outline: none;
     padding: 4px 8px;
-    text-align: center;
     cursor: pointer;
   }
 
@@ -418,11 +431,16 @@ export default defineComponent({
     background: rgba(255, 255, 255, 0.2);
   }
 
-  & > .button.-clear {
-    margin-left: auto;
+  & > .button > .icon {
+    height: 14px;
+  }
+
+  & > .button > .icon + .text {
+    margin-left: 4px;
   }
 
   & > .counter {
+    margin-left: auto;
     display: flex;
     padding: 0 8px;
     align-items: center;

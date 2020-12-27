@@ -6,7 +6,7 @@
         <img class="logo" src="@/assets/images/logo.svg" alt="Live Coding Theatre" v-else>
       </span>
     </p>
-    <CodeEditor v-model="sourceCode" class="editor" :max-length="1000" />
+    <CodeEditor v-model="sourceCode" class="editor" :max-length="20" />
   </div>
 </template>
 
