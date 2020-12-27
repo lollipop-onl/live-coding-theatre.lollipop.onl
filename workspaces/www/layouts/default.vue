@@ -33,6 +33,10 @@ export default defineComponent({
     };
   },
   head: {
+    titleTemplate: (titleChunk) =>
+      titleChunk
+        ? `${titleChunk} - Live Coding Theatre`
+        : 'Live Coding Theatre',
     link: [
       {
         rel: 'stylesheet',

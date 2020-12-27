@@ -199,7 +199,6 @@ export default defineComponent({
   & > .runner::-webkit-scrollbar {
     width: 15px;
     background: transparent;
-    border-left: red;
   }
 
   & > .runner::-webkit-scrollbar-track {
@@ -224,7 +223,6 @@ export default defineComponent({
   &::-webkit-scrollbar {
     width: 15px;
     background: transparent;
-    border-left: red;
   }
 
   &::-webkit-scrollbar-track {

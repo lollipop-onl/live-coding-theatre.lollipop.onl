@@ -11,6 +11,8 @@ import {
   onUnmounted,
   useContext,
   computed,
+  useMeta,
+  watch,
 } from '@nuxtjs/composition-api';
 import { useStore } from '@/helpers/typed-store';
 
@@ -19,8 +21,18 @@ export default defineComponent({
   setup() {
     const { app, route } = useContext();
     const store = useStore();
+    const meta = useMeta();
     const key = computed(() => route.value.params.key);
+    const theatreName = computed(() => store.state.theatre.name);
     const dbRef = app.$fire.database.ref('theatres').child(key.value);
+
+    watch(
+      theatreName,
+      () => {
+        meta.title.value = theatreName.value;
+      },
+      { immediate: true }
+    );
 
     onMounted(() => {
       dbRef.on('value', (snapshot) => {
@@ -52,5 +64,6 @@ export default defineComponent({
       dbRef.off('value');
     });
   },
+  head: {},
 });
 </script>
