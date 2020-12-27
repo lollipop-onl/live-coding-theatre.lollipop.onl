@@ -17,14 +17,19 @@
     </label>
     <CodeRunner class="runner" :code="localValue" />
     <div class="codeEditorFooter footer">
-      <BaseSelect v-model="tabSize" class="button" :options="tabSizeOptions">
-        <template #default> Tab: {{ tabSize }} </template>
-      </BaseSelect>
-      <BaseCheckbox v-model="enableLigature" class="button">
-        <template #default="{ checked }">
-          Ligature: {{ checked ? 'ON' : 'OFF' }}
-        </template>
-      </BaseCheckbox>
+      <a
+        href="https://lodash.com/docs/4.17.20"
+        target="_blank"
+        rel="noopener noreferer"
+        class="button"
+      >
+        <img
+          class="icon Lodash"
+          src="@/assets/images/icon-lodash.svg"
+          alt="Lodash"
+        />
+        <span class="text">available</span>
+      </a>
       <button class="button" type="button" @click="formatCode">
         <img
           class="icon"
@@ -33,6 +38,14 @@
         />
         <span class="text"> Format </span>
       </button>
+      <BaseSelect v-model="tabSize" class="button" :options="tabSizeOptions">
+        <template #default> Tab: {{ tabSize }} </template>
+      </BaseSelect>
+      <BaseCheckbox v-model="enableLigature" class="button">
+        <template #default="{ checked }">
+          Ligature: {{ checked ? 'ON' : 'OFF' }}
+        </template>
+      </BaseCheckbox>
       <div class="counter">
         <div class="length">{{ formatNumber(localValue.length) }}</div>
         <!-- <div class="max">{{ formatNumber(maxLength) }}</div> -->
@@ -265,6 +278,7 @@ export default defineComponent({
   & > .wrapper {
     position: relative;
     width: 100%;
+    min-height: 100%;
     overflow: hidden;
   }
 
@@ -424,6 +438,7 @@ export default defineComponent({
     background: none;
     border: none;
     outline: none;
+    text-decoration: none;
   }
 
   & > .button:hover,
@@ -433,6 +448,10 @@ export default defineComponent({
 
   & > .button > .icon {
     height: 14px;
+  }
+
+  & > .button > .icon.Lodash {
+    height: 12px;
   }
 
   & > .button > .icon + .text {

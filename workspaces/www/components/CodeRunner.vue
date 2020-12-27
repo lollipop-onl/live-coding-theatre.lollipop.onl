@@ -121,6 +121,7 @@ export default defineComponent({
                 val === null ? 'null' :
                 typeof val === 'string' ? \`"\${val}"\` :
                 typeof val === 'object' ? JSON.stringify(val) :
+                typeof val === 'function' && 'VERSION' in val ? \`Lodash version \${_.VERSION}\` :
                 val.toString();
               window.parent.postMessage({ type: 'answer', value, token: '${newToken}' });
 

@@ -55,7 +55,7 @@ export default defineComponent({
 
     watch(
       sourceCode,
-      throttle(200, async () => {
+      throttle(1000, async () => {
         if (!anonymousUserId.value) {
           return;
         }
