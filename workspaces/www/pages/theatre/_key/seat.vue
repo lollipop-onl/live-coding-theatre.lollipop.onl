@@ -132,41 +132,42 @@ export default defineComponent({
 <style lang="postcss" scoped>
 .pageContainer {
   display: flex;
-  height: 100vh;
   flex-direction: column;
+  height: 100vh;
 
   & > .message {
-    background: #191919;
-    overflow: hidden;
     display: grid;
     place-items: center;
     width: 100%;
+    overflow: hidden;
+    background: #191919;
     border-bottom: 1px solid #0d0d10;
   }
 
   & > .message > .container {
     display: grid;
     place-items: center;
+    width: 100%;
+    max-width: 760px;
     min-height: 48px;
     max-height: 120px;
+    padding: 16px 32px;
     overflow-y: scroll;
-    max-width: 760px;
-    width: 100%;
+    font-family: Sawarabi Mincho, sans-serif;
+    font-size: 18px;
     line-height: 1.5;
     white-space: pre-wrap;
-    font-size: 18px;
-    font-family: Sawarabi Mincho, sans-serif;
+    background-color: #fff;
+    background-image:
+      linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.12),
+        rgba(0, 0, 0, 0)
+      );
     border-top: 16px solid #000;
     border-right: 20px solid #000;
     border-bottom: 16px solid #000;
     border-left: 32px solid #000;
-    padding: 16px 32px;
-    background-color: #fff;
-    background-image: linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0.12),
-      rgba(0, 0, 0, 0)
-    );
   }
 
   & > .message > .container::-webkit-scrollbar {

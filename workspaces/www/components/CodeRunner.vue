@@ -198,7 +198,12 @@ export default defineComponent({
 
   & > .block {
     position: relative;
+    box-sizing: border-box;
     display: flex;
+    width: 100%;
+    max-width: 1080px;
+    padding: 0 16px;
+    margin: 0 auto;
     font-family: Fira Code, monospace;
     line-height: 1.5;
   }
@@ -213,6 +218,7 @@ export default defineComponent({
     .hljs-quote {
       color: #969896;
     }
+
     .hljs-deletion,
     .hljs-name,
     .hljs-regexp,
@@ -223,6 +229,7 @@ export default defineComponent({
     .hljs-variable {
       color: #c66;
     }
+
     .hljs-built_in,
     .hljs-builtin-name,
     .hljs-link,
@@ -233,33 +240,40 @@ export default defineComponent({
     .hljs-type {
       color: #de935f;
     }
+
     .hljs-attribute {
       color: #f0c674;
     }
+
     .hljs-addition,
     .hljs-bullet,
     .hljs-string,
     .hljs-symbol {
       color: #b5bd68;
     }
+
     .hljs-section,
     .hljs-title {
       color: #81a2be;
     }
+
     .hljs-keyword,
     .hljs-selector-tag {
       color: #b294bb;
     }
+
     .hljs {
       display: block;
-      overflow-x: auto;
-      background: #1a1b26;
-      color: #c5c8c6;
       padding: 0.5em;
+      overflow-x: auto;
+      color: #c5c8c6;
+      background: #1a1b26;
     }
+
     .hljs-emphasis {
       font-style: italic;
     }
+
     .hljs-strong {
       font-weight: 700;
     }
@@ -278,14 +292,6 @@ export default defineComponent({
 
   & > .block.Error {
     color: #bb616b;
-  }
-
-  & > .block {
-    width: 100%;
-    max-width: 1080px;
-    box-sizing: border-box;
-    padding: 0 16px;
-    margin: 0 auto;
   }
 }
 </style>

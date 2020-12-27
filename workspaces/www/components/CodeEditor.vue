@@ -207,8 +207,8 @@ export default defineComponent({
   }
 
   & > .runner::-webkit-scrollbar-thumb {
-    opacity: 0;
     background: rgba(134, 139, 196, 0.08);
+    opacity: 0;
   }
 
   & > .runner::-webkit-scrollbar-thumb:hover {
@@ -231,8 +231,8 @@ export default defineComponent({
   }
 
   &::-webkit-scrollbar-thumb {
-    opacity: 0;
     background: rgba(25, 25, 25, 0.1);
+    opacity: 0;
   }
 
   &::-webkit-scrollbar-thumb:hover {
@@ -383,9 +383,9 @@ export default defineComponent({
 }
 
 .codeEditorFooter {
+  box-sizing: border-box;
   display: flex;
   align-items: center;
-  box-sizing: border-box;
   padding: 0 16px;
   font-size: 12px;
   color: #787c99;
@@ -397,12 +397,6 @@ export default defineComponent({
     align-items: flex-end;
     padding: 8px 0;
     margin-left: auto;
-  }
-
-  & > .counter > .length {
-  }
-
-  & > .counter > .max {
   }
 
   & > .counter > .max::before {

@@ -5,7 +5,7 @@ extends:
 rules:
   string-quotes: single
   selector-pseudo-element-no-unknown:
-    - true,
+    - true
     - ignorePseudoElements: [v-deep]
   rscss/class-format:
     - true
