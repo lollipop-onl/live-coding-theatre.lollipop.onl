@@ -28,6 +28,8 @@ import {
   ref,
   watch,
 } from '@nuxtjs/composition-api';
+import prettier from 'prettier/standalone';
+import parserBabel from 'prettier/parser-babel';
 
 export default defineComponent({
   name: 'CodeRunner',
@@ -58,6 +60,16 @@ export default defineComponent({
           results.value = [event.data];
 
           return;
+        }
+
+        try {
+          event.data.value = prettier.format(event.data.value, {
+            semi: false,
+            parser: 'babel',
+            plugins: [parserBabel],
+          });
+        } catch (err) {
+          // do nothing.
         }
 
         results.value.push(event.data);
@@ -151,6 +163,7 @@ export default defineComponent({
                 typeof val === 'undefined' ? 'undefined' :
                 val === null ? 'null' :
                 typeof val === 'string' ? \`"\${val}"\` :
+                typeof val === 'object' ? JSON.stringify(val) :
                 val.toString();
               window.parent.postMessage({ type: 'answer', value, token: '${newToken}' });
 

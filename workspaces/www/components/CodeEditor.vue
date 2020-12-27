@@ -17,17 +17,18 @@
     </label>
     <CodeRunner class="runner" :code="localValue" />
     <div class="codeEditorFooter footer">
-      <BaseSelect v-model="tabSize" :options="tabSizeOptions">
-        <template #default>
-          <p>Tab: {{ tabSize }}</p>
-        </template>
+      <BaseSelect v-model="tabSize" class="button" :options="tabSizeOptions">
+        <template #default> Tab: {{ tabSize }} </template>
       </BaseSelect>
-      <BaseCheckbox v-model="enableRegatures">
+      <BaseCheckbox v-model="enableRegatures" class="button">
         <template #default="{ checked }">
-          <p>Regatures: {{ checked ? 'enabled' : 'disabled' }}</p>
+          Regatures: {{ checked ? 'enabled' : 'disabled' }}
         </template>
       </BaseCheckbox>
-      <button type="button" @click="formatCode">Format code</button>
+      <button class="button" type="button" @click="formatCode">
+        Format code
+      </button>
+      <button class="button -clear" type="button" @click="clearCode">🗑</button>
       <div class="counter">
         <div class="length">{{ formatNumber(localValue.length) }}</div>
         <div class="max">{{ formatNumber(maxLength) }}</div>
@@ -130,6 +131,16 @@ export default defineComponent({
       }
     };
 
+    const clearCode = () => {
+      if (
+        window.confirm(
+          '入力されているコードをクリアします。\n\n※この操作は取り消せません'
+        )
+      ) {
+        localValue.value = '';
+      }
+    };
+
     watch(tabSize, () => {
       tabOverride.tabSize(tabSize.value);
 
@@ -173,6 +184,7 @@ export default defineComponent({
       displayedCode,
       onKeydown,
       formatCode,
+      clearCode,
       formatNumber,
     };
   },
@@ -385,22 +397,40 @@ export default defineComponent({
 .codeEditorFooter {
   box-sizing: border-box;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   padding: 0 16px;
   font-size: 12px;
-  color: #787c99;
   background: #16161e;
   border-top: 1px solid #0d0d10;
 
-  & > .counter {
-    display: flex;
-    align-items: flex-end;
-    padding: 8px 0;
+  & > .button {
+    border: none;
+    background: none;
+    color: #787c99;
+    outline: none;
+    padding: 4px 8px;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  & > .button:hover,
+  & > .button:active {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  & > .button.-clear {
     margin-left: auto;
   }
 
+  & > .counter {
+    display: flex;
+    padding: 0 8px;
+    align-items: center;
+    color: #787c99;
+    font-family: Fira Code, monospace;
+  }
+
   & > .counter > .max::before {
-    padding: 0 4px;
     content: '/';
   }
 }

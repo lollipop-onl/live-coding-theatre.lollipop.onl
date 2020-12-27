@@ -1,8 +1,9 @@
 <template>
   <div class="pageContainer">
-    <p v-if="message" class="message">
+    <p class="message">
       <span class="container">
-        <span class="text">{{ message }}</span>
+        <span class="text" v-if="message">{{ message }}</span>
+        <img class="logo" src="@/assets/images/logo.svg" alt="Live Coding Theatre" v-else>
       </span>
     </p>
     <CodeEditor v-model="sourceCode" class="editor" :max-length="1000" />
@@ -17,7 +18,6 @@ import {
   onUnmounted,
   ref,
   useContext,
-  useMeta,
   watch,
 } from '@nuxtjs/composition-api';
 import CodeEditor from '@/components/CodeEditor.vue';
@@ -136,12 +136,37 @@ export default defineComponent({
   height: 100vh;
 
   & > .message {
+    position: relative;
     display: grid;
     place-items: center;
     width: 100%;
     overflow: hidden;
     background: #191919;
+    background-image:
+      linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.6),
+        rgba(0, 0, 0, 0)
+      );
     border-bottom: 1px solid #0d0d10;
+  }
+
+  & > .message::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-image:
+      linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.2),
+        rgba(0, 0, 0, 0.08),
+        rgba(0, 0, 0, 0)
+      );
+      pointer-events: none;
   }
 
   & > .message > .container {
@@ -154,16 +179,7 @@ export default defineComponent({
     padding: 16px 32px;
     overflow-y: scroll;
     font-family: Sawarabi Mincho, sans-serif;
-    font-size: 18px;
-    line-height: 1.5;
-    white-space: pre-wrap;
     background-color: #fff;
-    background-image:
-      linear-gradient(
-        to bottom,
-        rgba(0, 0, 0, 0.12),
-        rgba(0, 0, 0, 0)
-      );
     border-top: 16px solid #000;
     border-right: 20px solid #000;
     border-bottom: 16px solid #000;
@@ -186,6 +202,18 @@ export default defineComponent({
 
   & > .message > .container:hover::-webkit-scrollbar-thumb {
     visibility: visible;
+  }
+
+  & > .message > .container > .text {
+    font-size: 18px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    color: #252521;
+  }
+
+  & > .message > .container > .logo {
+    display: block;
+    height: 32px;
   }
 
   & > .editor {
