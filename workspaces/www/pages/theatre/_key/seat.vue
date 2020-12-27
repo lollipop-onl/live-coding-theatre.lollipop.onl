@@ -152,13 +152,14 @@ export default defineComponent({
   }
 
   & > .message::before {
-    content: '';
     position: absolute;
     top: 0;
     left: 0;
     display: block;
     width: 100%;
     height: 100%;
+    pointer-events: none;
+    content: '';
     background-image:
       linear-gradient(
         to bottom,
@@ -166,7 +167,6 @@ export default defineComponent({
         rgba(0, 0, 0, 0.08),
         rgba(0, 0, 0, 0)
       );
-      pointer-events: none;
   }
 
   & > .message > .container {
@@ -207,8 +207,8 @@ export default defineComponent({
   & > .message > .container > .text {
     font-size: 18px;
     line-height: 1.5;
-    white-space: pre-wrap;
     color: #252521;
+    white-space: pre-wrap;
   }
 
   & > .message > .container > .logo {

@@ -418,12 +418,12 @@ export default defineComponent({
     display: flex;
     align-items: center;
     justify-content: center;
-    border: none;
-    background: none;
-    color: #787c99;
-    outline: none;
     padding: 4px 8px;
+    color: #787c99;
     cursor: pointer;
+    background: none;
+    border: none;
+    outline: none;
   }
 
   & > .button:hover,
@@ -440,12 +440,12 @@ export default defineComponent({
   }
 
   & > .counter {
-    margin-left: auto;
     display: flex;
-    padding: 0 8px;
     align-items: center;
-    color: #787c99;
+    padding: 0 8px;
+    margin-left: auto;
     font-family: Fira Code, monospace;
+    color: #787c99;
   }
 
   & > .counter > .max::before {
