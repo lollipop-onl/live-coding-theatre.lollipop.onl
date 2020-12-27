@@ -30,6 +30,7 @@ import {
 } from '@nuxtjs/composition-api';
 import prettier from 'prettier/standalone';
 import parserBabel from 'prettier/parser-babel';
+import { throttle } from 'throttle-debounce';
 
 export default defineComponent({
   name: 'CodeRunner',
@@ -96,7 +97,7 @@ export default defineComponent({
 
     watch(
       [() => props.code],
-      () => {
+      throttle(200, () => {
         if (runnerElement.value) {
           document.body.removeChild(runnerElement.value);
         }
@@ -107,51 +108,7 @@ export default defineComponent({
         /* eslint-disable no-useless-escape, prettier/prettier */
         const docs = `
           <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"><\/script>
-
-          <script>
-            var infiniteLoopDetector = (function() {
-              var map = {}
-
-              // define an InfiniteLoopError class
-              function InfiniteLoopError(msg, type) {
-                Error.call(this ,msg)
-                this.type = 'InfiniteLoopError'
-              }
-
-              function infiniteLoopDetector(id) {
-                if (id in map) { // 非首次执行，此处可以优化，性能太低
-                  if (Date.now() - map[id] > 10) {
-                    delete map[id]
-
-                    const err = new Error('Infinite loop detected', 'InfiniteLoopError');
-
-                    err.name = 'InfiniteLoopError';
-
-                    throw err;
-                  }
-                } else { // 首次运行，记录循环开始的时间。之所有把非首次运行的判断写在前面的if里是因为上面会执行更多次
-                  map[id] = Date.now()
-                }
-              }
-
-              infiniteLoopDetector.wrap = function(codeStr) {
-                if (typeof codeStr !== 'string') {
-                  throw new Error('Can only wrap code represented by string, not any other thing at the time! If you want to wrap a function, convert it to string first.')
-                }
-                // this is not a strong regex, but enough to use at the time
-                return codeStr.replace(/for *\\(.*\\{|while *\\(.*\{|do *\\{/g, function(loopHead) {
-                  var id = parseInt(Math.random() * Number.MAX_SAFE_INTEGER)
-                  return \`infiniteLoopDetector(\${id});\${loopHead}infiniteLoopDetector(\${id});\`
-                })
-              }
-
-              infiniteLoopDetector.unwrap = function(codeStr) {
-                return codeStr.replace(/infiniteLoopDetector\\([0-9]*?\\);/g, '')
-              }
-
-              return infiniteLoopDetector
-            }())
-          <\/script>
+          <script src="/js/infinite-loop-detector.js"><\/script>
 
           <script>
             window.addEventListener('error', (err) => window.parent.postMessage({ type: 'error', value: err.error.toString(), token: '${newToken}' }));
@@ -194,7 +151,7 @@ export default defineComponent({
         document.body.appendChild($iframe);
         runnerElement.value = $iframe;
         token.value = newToken;
-      },
+      }),
       { immediate: true }
     );
 

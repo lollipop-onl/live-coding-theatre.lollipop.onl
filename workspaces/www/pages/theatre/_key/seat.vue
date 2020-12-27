@@ -2,8 +2,13 @@
   <div class="pageContainer">
     <p class="message">
       <span class="container">
-        <span class="text" v-if="message">{{ message }}</span>
-        <img class="logo" src="@/assets/images/logo.svg" alt="Live Coding Theatre" v-else>
+        <span v-if="message" class="text">{{ message }}</span>
+        <img
+          v-else
+          class="logo"
+          src="@/assets/images/logo.svg"
+          alt="Live Coding Theatre"
+        />
       </span>
     </p>
     <CodeEditor v-model="sourceCode" class="editor" :max-length="20" />
@@ -20,6 +25,7 @@ import {
   useContext,
   watch,
 } from '@nuxtjs/composition-api';
+import { throttle } from 'throttle-debounce';
 import CodeEditor from '@/components/CodeEditor.vue';
 import { useStore } from '@/helpers/typed-store';
 
@@ -47,20 +53,23 @@ export default defineComponent({
       (): boolean => !!(anonymousUserId.value && key.value)
     );
 
-    watch(sourceCode, async () => {
-      if (!anonymousUserId.value) {
-        return;
-      }
+    watch(
+      sourceCode,
+      throttle(200, async () => {
+        if (!anonymousUserId.value) {
+          return;
+        }
 
-      await app.$fire.database
-        .ref('theatres')
-        .child(key.value)
-        .child('audiences')
-        .child(anonymousUserId.value)
-        .update({
-          code: sourceCode.value,
-        });
-    });
+        await app.$fire.database
+          .ref('theatres')
+          .child(key.value)
+          .child('audiences')
+          .child(anonymousUserId.value)
+          .update({
+            code: sourceCode.value,
+          });
+      })
+    );
 
     watch(
       [currentAudience, isInitialized],
@@ -142,12 +151,11 @@ export default defineComponent({
     width: 100%;
     overflow: hidden;
     background: #191919;
-    background-image:
-      linear-gradient(
-        to bottom,
-        rgba(0, 0, 0, 0.6),
-        rgba(0, 0, 0, 0)
-      );
+    background-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.6),
+      rgba(0, 0, 0, 0)
+    );
     border-bottom: 1px solid #0d0d10;
   }
 
@@ -160,13 +168,12 @@ export default defineComponent({
     height: 100%;
     pointer-events: none;
     content: '';
-    background-image:
-      linear-gradient(
-        to bottom,
-        rgba(0, 0, 0, 0.2),
-        rgba(0, 0, 0, 0.08),
-        rgba(0, 0, 0, 0)
-      );
+    background-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.2),
+      rgba(0, 0, 0, 0.08),
+      rgba(0, 0, 0, 0)
+    );
   }
 
   & > .message > .container {
