@@ -134,7 +134,7 @@ export default defineComponent({
     align-items: center;
     flex-direction: column;
     padding: 100px 0;
-    width: 280px;
+    width: 380px;
     background: #f1aa11;
   }
 
@@ -203,6 +203,7 @@ export default defineComponent({
   & > .form > .submit {
     padding: 0 48px;
     height: 48px;
+    cursor: pointer;
     border: none;
     background: #f1aa11;
     color: #fff;

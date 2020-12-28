@@ -29,6 +29,17 @@ Note：
     </label>
     <CodeRunner class="runner" :code="localValue" />
     <div class="codeEditorFooter footer">
+      <button
+        v-if="currentAudience"
+        class="button"
+        type="button"
+        @click="changeName"
+      >
+        <img src="@/assets/images/icon-brain.svg" alt="Person" class="icon" />
+        <span class="text">
+          {{ currentAudience.name }}
+        </span>
+      </button>
       <a
         href="https://lodash.com/docs/4.17.20"
         target="_blank"
@@ -60,7 +71,6 @@ Note：
       </BaseCheckbox>
       <div class="counter">
         <div class="length">{{ formatNumber(localValue.length) }}</div>
-        <!-- <div class="max">{{ formatNumber(maxLength) }}</div> -->
       </div>
       <button class="button" type="button" @click="clearCode">
         <img
@@ -79,11 +89,13 @@ import {
   defineComponent,
   onBeforeMount,
   ref,
+  useContext,
   watch,
 } from '@nuxtjs/composition-api';
 // @ts-expect-error
 import tabOverride from 'taboverride';
 import { formatCode as formatCodeWithPrettier } from '@/helpers/prettier';
+import { useStore } from '@/helpers/typed-store';
 
 const ALLOWED_TAB_SIZES = [2, 4, 8];
 const LOCALSTORAGE_TAB_SIZE_KEY = 'editor_tabSize';
@@ -111,9 +123,19 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
+    const { app, route } = useContext();
+    const store = useStore();
     const textareaRef = ref<HTMLTextAreaElement>();
     const tabSize = ref(2);
     const enableLigature = ref(true);
+    const anonymousUserId = computed(
+      () => store.state.auth.anonymousUserId || ''
+    );
+    const currentAudience = computed(() =>
+      store.state.theatre.audiences.find(
+        ({ key }) => key === anonymousUserId.value
+      )
+    );
     const localValue = computed({
       get(): string {
         return props.value;
@@ -134,6 +156,53 @@ export default defineComponent({
       { label: 'タブサイズ： 4', value: 4 },
       { label: 'タブサイズ： 8', value: 8 },
     ];
+
+    const changeName = async (): Promise<void> => {
+      if (!currentAudience.value) {
+        return;
+      }
+
+      const { key: theatreKey } = route.value.params;
+      const {
+        name: currentName,
+        key: currentAudienceKey,
+      } = currentAudience.value;
+      const newName = window.prompt(
+        '変更したい名前を入力してください。\n（20文字以内）',
+        currentName
+      );
+
+      if (!newName) {
+        window.alert('空文字は名前として使用できません。');
+
+        return;
+      }
+
+      if (/^[\x20\u3000]*$/.test(newName)) {
+        window.alert('スペースのみは名前として使用できません。');
+
+        return;
+      }
+
+      if (newName.length > 20) {
+        window.alert('文字数が 20文字 をオーバーしています。');
+
+        return;
+      }
+
+      if (newName === currentName) {
+        return;
+      }
+
+      await app.$fire.database
+        .ref('theatres')
+        .child(theatreKey)
+        .child('audiences')
+        .child(currentAudienceKey)
+        .update({
+          name: newName,
+        });
+    };
 
     const onKeydown = (e: InputEvent, ...args: any[]) => {
       tabOverride.handlers.keydown(e, ...args);
@@ -214,9 +283,11 @@ export default defineComponent({
       tabSize,
       tabSizeOptions,
       enableLigature,
+      currentAudience,
       localValue,
       displayedCode,
       onKeydown,
+      changeName,
       formatCode,
       clearCode,
       formatNumber,
