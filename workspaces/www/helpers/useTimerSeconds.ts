@@ -44,7 +44,8 @@ export const useTimerSeconds = () => {
 
     const nextValue =
       localSeconds.value -
-      Math.ceil((Date.now() - localStartedAt.value) / 1000);
+      Math.ceil((Date.now() - localStartedAt.value) / 1000) +
+      1;
 
     seconds.value = nextValue > 0 ? nextValue : 0;
 

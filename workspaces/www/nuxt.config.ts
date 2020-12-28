@@ -1,5 +1,18 @@
 import { NuxtConfig } from '@nuxt/types';
 
+require('dotenv').config();
+
+const {
+  FIREBASE_API_KEY,
+  FIREBASE_AUTH_DOMAIN,
+  FIREBASE_DATABASE_URL,
+  FIREBASE_PROJECT_ID,
+  FIREBASE_STORAGE_BUCKET,
+  FIREBASE_MESSAGING_SENDER_ID,
+  FIREBASE_APP_ID,
+  FIREBASE_MEASUREMENT_ID,
+} = process.env;
+
 const config: NuxtConfig = {
   ssr: false,
   buildModules: ['@nuxt/typescript-build', '@nuxtjs/composition-api'],
@@ -19,14 +32,14 @@ const config: NuxtConfig = {
   },
   firebase: {
     config: {
-      apiKey: 'AIzaSyCnFjcRfuBW_XkBHK7wi9prKC566yF2KpU',
-      authDomain: 'live-coding-theatre.firebaseapp.com',
-      databaseURL: 'https://live-coding-theatre-default-rtdb.firebaseio.com',
-      projectId: 'live-coding-theatre',
-      storageBucket: 'live-coding-theatre.appspot.com',
-      messagingSenderId: '1084838308223',
-      appId: '1:1084838308223:web:b1bd399ed44fff6d73d24a',
-      measurementId: 'G-L851X9BMBB',
+      apiKey: FIREBASE_API_KEY,
+      authDomain: FIREBASE_AUTH_DOMAIN,
+      databaseURL: FIREBASE_DATABASE_URL,
+      projectId: FIREBASE_PROJECT_ID,
+      storageBucket: FIREBASE_STORAGE_BUCKET,
+      messagingSenderId: FIREBASE_MESSAGING_SENDER_ID,
+      appId: FIREBASE_APP_ID,
+      measurementId: FIREBASE_MEASUREMENT_ID,
     },
     services: {
       auth: true,
