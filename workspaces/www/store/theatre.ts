@@ -6,6 +6,8 @@ type State = {
   name?: string;
   message?: string;
   audiences: any[];
+  timerStartedAt?: number;
+  timerSeconds?: number;
 };
 
 export const state = (): State => ({
@@ -21,6 +23,8 @@ export const mutations = {
     Vue.typedSet(state, 'name', theatre.name);
     Vue.typedSet(state, 'message', theatre.message);
     Vue.typedSet(state, 'audiences', theatre.audiences);
+    Vue.typedSet(state, 'timerStartedAt', theatre.timerStartedAt);
+    Vue.typedSet(state, 'timerSeconds', theatre.timerSeconds);
   },
   /** シアター情報を削除 */
   clearTheatre(state: State): void {
@@ -28,6 +32,8 @@ export const mutations = {
     Vue.typedDelete(state, 'name');
     Vue.typedDelete(state, 'message');
     Vue.typedSet(state, 'audiences', []);
+    Vue.typedDelete(state, 'timerStartedAt');
+    Vue.typedDelete(state, 'timerSeconds');
   },
 };
 

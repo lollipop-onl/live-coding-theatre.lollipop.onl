@@ -66,6 +66,8 @@ export default defineComponent({
           name: theatre.name,
           message: theatre.message,
           audiences,
+          timerStartedAt: theatre.timerStartedAt,
+          timerSeconds: theatre.timerSeconds,
         });
       });
     });

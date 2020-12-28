@@ -69,6 +69,11 @@ Note：
           Ligature: {{ checked ? 'ON' : 'OFF' }}
         </template>
       </BaseCheckbox>
+      <div class="spacer"></div>
+      <button v-if="timerMMSS != null" class="button Timer" type="button">
+        <img src="@/assets/images/icon-timer.svg" alt="Timer" class="icon" />
+        <span class="text">{{ timerMMSS }}</span>
+      </button>
       <div class="counter">
         <div class="length">{{ formatNumber(localValue.length) }}</div>
       </div>
@@ -96,6 +101,7 @@ import {
 import tabOverride from 'taboverride';
 import { formatCode as formatCodeWithPrettier } from '@/helpers/prettier';
 import { useStore } from '@/helpers/typed-store';
+import { useTimerSeconds } from '@/helpers/useTimerSeconds';
 
 const ALLOWED_TAB_SIZES = [2, 4, 8];
 const LOCALSTORAGE_TAB_SIZE_KEY = 'editor_tabSize';
@@ -125,9 +131,11 @@ export default defineComponent({
   setup(props, { emit }) {
     const { app, route } = useContext();
     const store = useStore();
+    const timer = useTimerSeconds();
     const textareaRef = ref<HTMLTextAreaElement>();
     const tabSize = ref(2);
     const enableLigature = ref(true);
+    const timerMMSS = computed(() => timer.mmss.value);
     const anonymousUserId = computed(
       () => store.state.auth.anonymousUserId || ''
     );
@@ -283,6 +291,7 @@ export default defineComponent({
       tabSize,
       tabSizeOptions,
       enableLigature,
+      timerMMSS,
       currentAudience,
       localValue,
       displayedCode,
@@ -518,6 +527,10 @@ export default defineComponent({
   background: #16161e;
   border-top: 1px solid #0d0d10;
 
+  & > .spacer {
+    flex-grow: 1;
+  }
+
   & > .button {
     display: flex;
     align-items: center;
@@ -549,11 +562,18 @@ export default defineComponent({
     margin-left: 4px;
   }
 
+  & > .button.Timer {
+    font-family: Fira Code, monospace;
+  }
+
+  & > .button.Timer > .text {
+    opacity: 0.8;
+  }
+
   & > .counter {
     display: flex;
     align-items: center;
     padding: 0 8px;
-    margin-left: auto;
     font-family: Fira Code, monospace;
     color: #787c99;
   }
