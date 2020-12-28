@@ -523,13 +523,13 @@ export default defineComponent({
     align-items: center;
     justify-content: center;
     padding: 4px 8px;
+    font-size: 12px;
     color: #787c99;
     text-decoration: none;
     cursor: pointer;
     background: none;
     border: none;
     outline: none;
-    font-size: 12px;
   }
 
   & > .button:hover,

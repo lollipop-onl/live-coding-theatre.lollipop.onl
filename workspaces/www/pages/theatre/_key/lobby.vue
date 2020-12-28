@@ -110,12 +110,12 @@ export default defineComponent({
 
 <style lang="postcss" scoped>
 .pageContainer {
+  box-sizing: border-box;
   display: grid;
   place-items: center;
-  padding: 32px 0;
-  box-sizing: border-box;
   width: 100%;
   height: 100vh;
+  padding: 32px 0;
   overflow-y: auto;
   background: #ededed;
 }
@@ -124,61 +124,64 @@ export default defineComponent({
   display: flex;
   overflow: hidden;
   border-radius: 24px;
-  box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.02),
-    0 6.7px 5.3px rgba(0, 0, 0, 0.028), 0 12.5px 10px rgba(0, 0, 0, 0.035),
-    0 22.3px 17.9px rgba(0, 0, 0, 0.042), 0 41.8px 33.4px rgba(0, 0, 0, 0.05),
+  box-shadow:
+    0 2.8px 2.2px rgba(0, 0, 0, 0.02),
+    0 6.7px 5.3px rgba(0, 0, 0, 0.028),
+    0 12.5px 10px rgba(0, 0, 0, 0.035),
+    0 22.3px 17.9px rgba(0, 0, 0, 0.042),
+    0 41.8px 33.4px rgba(0, 0, 0, 0.05),
     0 100px 80px rgba(0, 0, 0, 0.07);
 
   & > .illustration {
     display: flex;
-    align-items: center;
     flex-direction: column;
-    padding: 100px 0;
+    align-items: center;
     width: 380px;
+    padding: 100px 0;
     background: #f1aa11;
   }
 
   & > .illustration > .logo {
+    width: 160px;
     margin-top: auto;
     margin-bottom: -32px;
-    width: 160px;
   }
 
   & > .illustration > .image {
-    margin-bottom: auto;
     width: 230px;
+    margin-bottom: auto;
   }
 
   & > .form {
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     width: 480px;
-    background: #fff;
-    box-sizing: border-box;
     padding: 64px 48px;
+    background: #fff;
   }
 
   & > .form > .name {
+    margin-bottom: 16px;
     font-size: 32px;
     color: #252521;
-    margin-bottom: 16px;
   }
 
   & > .form > .audiences {
+    margin-bottom: 32px;
     font-size: 12px;
     font-weight: bold;
     color: #aaa;
-    margin-bottom: 32px;
   }
 
   & > .form > .note {
-    font-size: 10px;
-    color: #f12749;
     padding: 0 16px;
-    line-height: 1.5;
     margin-bottom: 40px;
+    font-size: 10px;
+    line-height: 1.5;
+    color: #f12749;
   }
 
   & > .form > .label {
@@ -189,29 +192,29 @@ export default defineComponent({
   }
 
   & > .form > .field {
-    width: 100%;
-    border: none;
-    background: #e9eeec;
-    border-radius: 4px;
-    font-size: 16px;
-    padding: 8px 16px;
-    line-height: 2;
     box-sizing: border-box;
+    width: 100%;
+    padding: 8px 16px;
     margin-bottom: 24px;
+    font-size: 16px;
+    line-height: 2;
+    background: #e9eeec;
+    border: none;
+    border-radius: 4px;
   }
 
   & > .form > .submit {
-    padding: 0 48px;
     height: 48px;
-    cursor: pointer;
-    border: none;
-    background: #f1aa11;
-    color: #fff;
-    border-radius: 24px;
+    padding: 0 48px;
     font-family: Fira Code, monospace;
-    letter-spacing: 0.2em;
-    text-indent: -0.2em;
     font-size: 14px;
+    color: #fff;
+    text-indent: -0.2em;
+    letter-spacing: 0.2em;
+    cursor: pointer;
+    background: #f1aa11;
+    border: none;
+    border-radius: 24px;
     transition: background 0.12s ease;
   }
 
