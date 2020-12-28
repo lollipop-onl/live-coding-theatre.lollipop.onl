@@ -2,7 +2,7 @@
   <div class="codeRunner">
     <template v-if="results.length === 0">
       <pre class="block Empty">
-        <span class="message">No results.</span>
+        <span class="message">No Answer</span>
       </pre>
     </template>
     <template v-else>
@@ -29,6 +29,7 @@ import {
   watch,
 } from '@nuxtjs/composition-api';
 import { throttle } from 'throttle-debounce';
+import { formatCode } from '@/helpers/prettier';
 
 export default defineComponent({
   name: 'CodeRunner',
@@ -61,14 +62,9 @@ export default defineComponent({
           return;
         }
 
-        const prettier = await import('prettier/standalone');
-        const parserBabel = await import('prettier/parser-babel');
-
         try {
-          event.data.value = prettier.format(event.data.value, {
+          event.data.value = await formatCode(event.data.value, {
             semi: false,
-            parser: 'babel',
-            plugins: [parserBabel],
           });
         } catch (err) {
           // do nothing.

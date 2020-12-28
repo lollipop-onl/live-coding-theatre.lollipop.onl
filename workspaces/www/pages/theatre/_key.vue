@@ -1,6 +1,11 @@
 <template>
   <div>
-    <nuxt-child />
+    <template v-if="!isInitialized || existsTheatre">
+      <nuxt-child />
+    </template>
+    <template v-else>
+      <p>404 page not found</p>
+    </template>
   </div>
 </template>
 
@@ -13,6 +18,7 @@ import {
   computed,
   useMeta,
   watch,
+  ref,
 } from '@nuxtjs/composition-api';
 import { useStore } from '@/helpers/typed-store';
 
@@ -22,8 +28,10 @@ export default defineComponent({
     const { app, route } = useContext();
     const store = useStore();
     const meta = useMeta();
+    const isInitialized = ref(false);
     const key = computed(() => route.value.params.key);
     const theatreName = computed(() => store.state.theatre.name);
+    const existsTheatre = computed(() => !!store.state.theatre.key);
     const dbRef = app.$fire.database.ref('theatres').child(key.value);
 
     watch(
@@ -36,6 +44,8 @@ export default defineComponent({
 
     onMounted(() => {
       dbRef.on('value', (snapshot) => {
+        isInitialized.value = true;
+
         if (!snapshot.exists()) {
           store.commit('theatre/clearTheatre');
 
@@ -63,6 +73,11 @@ export default defineComponent({
     onUnmounted(() => {
       dbRef.off('value');
     });
+
+    return {
+      isInitialized,
+      existsTheatre,
+    };
   },
   head: {},
 });

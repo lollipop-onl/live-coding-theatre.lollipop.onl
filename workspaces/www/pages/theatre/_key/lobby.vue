@@ -1,10 +1,34 @@
 <template>
-  <div>
-    <p>enter this theatre</p>
-    <form @submit.prevent="onSubmit">
-      <input v-model="name" type="text" placeholder="your display name" />
-      <button>enter theatre</button>
-    </form>
+  <div class="pageContainer">
+    <div class="theatreLobby">
+      <div class="illustration">
+        <img
+          class="logo"
+          src="@/assets/images/logo2.svg"
+          alt="Live Coding Theatre"
+        />
+        <img
+          class="image"
+          src="@/assets/images/illust-coding.svg"
+          alt="Coding"
+        />
+      </div>
+      <form class="form" @submit.prevent="onSubmit">
+        <div class="name">{{ theatreName }}</div>
+        <div class="audiences">
+          <template v-if="audienceLength === 0">No one </template>
+          <template v-else-if="audienceLength === 1">1 person is </template>
+          <template v-else>{{ audienceLength }} people are </template>
+          in the theatre
+        </div>
+        <p class="note">
+          入力内容はパブリックにアクセス可能な情報として保存されます。個人情報や機密情報が含まれないようご注意ください。
+        </p>
+        <label for="displayName" class="label">Display Name</label>
+        <input id="displayName" v-model="name" type="text" class="field" />
+        <button class="submit" :disabled="!name">Enter</button>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -24,17 +48,23 @@ export default defineComponent({
     const { app, redirect } = useContext();
     const store = useStore();
     const name = ref('');
-    const key = computed(() => store.state.theatre.key || '');
+    const theatreKey = computed(() => store.state.theatre.key || '');
+    const theatreName = computed(() => store.state.theatre.name);
     const anonymousUserId = computed(
       () => store.state.auth.anonymousUserId || ''
     );
+    const audiences = computed(() => store.state.theatre.audiences);
     const currentAudience = computed(() =>
-      store.state.theatre.audiences.find(
-        ({ key }) => key === anonymousUserId.value
-      )
+      audiences.value.find(({ key }) => key === anonymousUserId.value)
+    );
+    const audienceLength = computed(
+      () =>
+        store.state.theatre.audiences.filter(
+          ({ enteredAt }) => enteredAt != null
+        ).length
     );
     const isInitialized = computed(
-      (): boolean => !!(anonymousUserId.value && key.value)
+      (): boolean => !!(anonymousUserId.value && theatreKey.value)
     );
 
     const onSubmit = async () => {
@@ -44,7 +74,7 @@ export default defineComponent({
 
       await app.$fire.database
         .ref('theatres')
-        .child(key.value)
+        .child(theatreKey.value)
         .child('audiences')
         .child(anonymousUserId.value)
         .set({
@@ -60,7 +90,7 @@ export default defineComponent({
         }
 
         if (currentAudience.value) {
-          redirect(`/theatre/${key.value}/seat`);
+          redirect(`/theatre/${theatreKey.value}/seat`);
         }
       },
       { immediate: true }
@@ -68,8 +98,124 @@ export default defineComponent({
 
     return {
       name,
+      theatreKey,
+      theatreName,
+      audiences,
+      audienceLength,
       onSubmit,
     };
   },
 });
 </script>
+
+<style lang="postcss" scoped>
+.pageContainer {
+  display: grid;
+  place-items: center;
+  padding: 32px 0;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100vh;
+  overflow-y: auto;
+  background: #ededed;
+}
+
+.theatreLobby {
+  display: flex;
+  overflow: hidden;
+  border-radius: 24px;
+  box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.02),
+    0 6.7px 5.3px rgba(0, 0, 0, 0.028), 0 12.5px 10px rgba(0, 0, 0, 0.035),
+    0 22.3px 17.9px rgba(0, 0, 0, 0.042), 0 41.8px 33.4px rgba(0, 0, 0, 0.05),
+    0 100px 80px rgba(0, 0, 0, 0.07);
+
+  & > .illustration {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 100px 0;
+    width: 280px;
+    background: #f1aa11;
+  }
+
+  & > .illustration > .logo {
+    margin-top: auto;
+    margin-bottom: -32px;
+    width: 160px;
+  }
+
+  & > .illustration > .image {
+    margin-bottom: auto;
+    width: 230px;
+  }
+
+  & > .form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 480px;
+    background: #fff;
+    box-sizing: border-box;
+    padding: 64px 48px;
+  }
+
+  & > .form > .name {
+    font-size: 32px;
+    color: #252521;
+    margin-bottom: 16px;
+  }
+
+  & > .form > .audiences {
+    font-size: 12px;
+    font-weight: bold;
+    color: #aaa;
+    margin-bottom: 32px;
+  }
+
+  & > .form > .note {
+    font-size: 10px;
+    color: #f12749;
+    padding: 0 16px;
+    line-height: 1.5;
+    margin-bottom: 40px;
+  }
+
+  & > .form > .label {
+    width: 100%;
+    padding-bottom: 16px;
+    font-size: 12px;
+    color: #595959;
+  }
+
+  & > .form > .field {
+    width: 100%;
+    border: none;
+    background: #e9eeec;
+    border-radius: 4px;
+    font-size: 16px;
+    padding: 8px 16px;
+    line-height: 2;
+    box-sizing: border-box;
+    margin-bottom: 24px;
+  }
+
+  & > .form > .submit {
+    padding: 0 48px;
+    height: 48px;
+    border: none;
+    background: #f1aa11;
+    color: #fff;
+    border-radius: 24px;
+    font-family: Fira Code, monospace;
+    letter-spacing: 0.2em;
+    text-indent: -0.2em;
+    font-size: 14px;
+    transition: background 0.12s ease;
+  }
+
+  & > .form > .submit:disabled {
+    background: #aaa;
+  }
+}
+</style>

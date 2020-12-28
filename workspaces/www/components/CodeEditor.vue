@@ -6,13 +6,25 @@
           ref="textareaRef"
           v-model="localValue"
           class="field"
-          placeholder="abcd1234"
+          placeholder="Please fill in"
+          :disabled="disabled"
           @keydown="onKeydown"
         />
         <pre v-highlightjs="displayedCode" class="highlight">
           <code class="code javascript" />
         </pre>
-        <p class="placeholder">Please fill in</p>
+        <!-- eslint-disable prettier/prettier -->
+        <p class="placeholder">ようこそ、 Live Coding Theatre へ
+画面上のスクリーンに問題文／メッセージが表示されます
+
+Information：
+  ◇ console.answer(value); で最終的な回答を登録します
+  ◇ console 系のメソッドは DevTools へログが出力されます
+  ◇ _ で Lodash が利用できます
+
+Note：
+  ☆ 入力内容はパブリックな情報として保存されます。個人情報や機密情報が含まれないようご注意ください</p>
+        <!-- eslint-enable prettier/prettier -->
       </div>
     </label>
     <CodeRunner class="runner" :code="localValue" />
@@ -71,6 +83,7 @@ import {
 } from '@nuxtjs/composition-api';
 // @ts-expect-error
 import tabOverride from 'taboverride';
+import { formatCode as formatCodeWithPrettier } from '@/helpers/prettier';
 
 const ALLOWED_TAB_SIZES = [2, 4, 8];
 const LOCALSTORAGE_TAB_SIZE_KEY = 'editor_tabSize';
@@ -91,6 +104,10 @@ export default defineComponent({
     maxLength: {
       type: Number,
       default: Infinity,
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     },
   },
   setup(props, { emit }) {
@@ -139,14 +156,9 @@ export default defineComponent({
     };
 
     const formatCode = async (): Promise<void> => {
-      const prettier = await import('prettier/standalone');
-      const parserBabel = await import('prettier/parser-babel');
-
       try {
-        localValue.value = prettier.format(localValue.value, {
+        localValue.value = await formatCodeWithPrettier(localValue.value, {
           tabWidth: tabSize.value,
-          parser: 'babel',
-          plugins: [parserBabel],
         });
       } catch (err) {
         // do nothing.
@@ -446,6 +458,7 @@ export default defineComponent({
     background: none;
     border: none;
     outline: none;
+    font-size: 12px;
   }
 
   & > .button:hover,

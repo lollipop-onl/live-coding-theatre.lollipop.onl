@@ -53,3 +53,13 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="postcss" scoped>
+body,
+input,
+textarea,
+button {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+</style>

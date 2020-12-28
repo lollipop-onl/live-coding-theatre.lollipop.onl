@@ -1,7 +1,12 @@
 <template>
   <div class="pageContainer">
     <TheatreMessage class="message" :message="message" />
-    <CodeEditor v-model="sourceCode" class="editor" :max-length="20" />
+    <CodeEditor
+      v-model="sourceCode"
+      class="editor"
+      :max-length="20"
+      :disabled="!isInitialized"
+    />
   </div>
 </template>
 
@@ -96,7 +101,7 @@ export default defineComponent({
         enteredAt: null,
       });
 
-      sourceCode.value = currentAudience.value.code;
+      sourceCode.value = currentAudience.value.code || '';
     });
 
     onMounted(() => {
@@ -122,6 +127,7 @@ export default defineComponent({
       sourceCode,
       anonymousUserId,
       message,
+      isInitialized,
     };
   },
   head: {},

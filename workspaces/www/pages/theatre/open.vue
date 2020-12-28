@@ -9,6 +9,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, useContext } from '@nuxtjs/composition-api';
+import { nanoid } from 'nanoid';
 
 export default defineComponent({
   name: 'TheatreOpenPage',
@@ -16,11 +17,13 @@ export default defineComponent({
     const { app, redirect } = useContext();
     const name = ref('');
     const onSubmit = async () => {
-      const snapshot = await app.$fire.database.ref('theatres').push({
+      const key = nanoid();
+
+      await app.$fire.database.ref('theatres').child(key).set({
         name: name.value,
       });
 
-      redirect(`/theatre/${snapshot.key}/manage`);
+      redirect(`/theatre/${key}/manage`);
     };
 
     return {

@@ -11,6 +11,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, watch } from '@nuxtjs/composition-api';
+import { formatCode } from '@/helpers/prettier';
 
 export default defineComponent({
   name: 'CodeCard',
@@ -36,17 +37,7 @@ export default defineComponent({
           return;
         }
 
-        const prettier = await import('prettier/standalone');
-        const parserBabel = await import('prettier/parser-babel');
-
-        try {
-          displayCode.value = prettier.format(code, {
-            parser: 'babel',
-            plugins: [parserBabel],
-          });
-        } catch (err) {
-          displayCode.value = code;
-        }
+        displayCode.value = await formatCode(code);
       },
       { immediate: true }
     );
