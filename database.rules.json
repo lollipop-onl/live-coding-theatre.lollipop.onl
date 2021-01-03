@@ -10,7 +10,7 @@
           "$uid": {
             ".write": "$uid === auth.uid",
             "name": {
-              ".validate": "newData.isString() && newData.val().length <= 20 && newData.val().length > 0 && newData.val().matches(/^[\\x20\\u3000]*$/)"
+              ".validate": "newData.isString() && newData.val().length <= 20 && newData.val().length > 0 && !newData.val().matches(/^[\\x20\\u3000]*$/)"
             },
             "code": {
               ".validate": "newData.isString() && newData.val().length <= 5000"
