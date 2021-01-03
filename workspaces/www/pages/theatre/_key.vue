@@ -109,16 +109,17 @@ export default defineComponent({
 .pageContainer {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   width: 100%;
   height: 100vh;
   background: #ededed;
 
   & > .logo {
-    filter: invert(74%) sepia(34%) saturate(1859%) hue-rotate(352deg)
-      brightness(97%) contrast(94%) drop-shadow(-2px 0 1px #886112);
     margin-bottom: 16px;
+    filter:
+      invert(74%) sepia(34%) saturate(1859%) hue-rotate(352deg)
+      brightness(97%) contrast(94%) drop-shadow(-2px 0 1px #886112);
   }
 
   & > .logo > img {
@@ -131,9 +132,9 @@ export default defineComponent({
 
   & > .message {
     margin-top: 36px;
-    color: #f1aa11;
-    font-weight: bold;
     font-size: 24px;
+    font-weight: bold;
+    color: #f1aa11;
     text-shadow: 0 0 2px #eee2cb;
   }
 }
