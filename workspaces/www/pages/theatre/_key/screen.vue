@@ -16,6 +16,14 @@
         </masonry>
       </div>
     </div>
+    <div class="footer">
+      <img
+        src="@/assets/images/logo.svg"
+        alt="Live Coding Theatre"
+        class="logo"
+      />
+      <p class="name">{{ theatreName }}</p>
+    </div>
   </div>
 </template>
 
@@ -32,10 +40,12 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const message = computed(() => store.state.theatre.message);
+    const theatreName = computed(() => store.state.theatre.name);
     const audiences = computed(() => store.state.theatre.audiences);
 
     return {
       message,
+      theatreName,
       audiences,
     };
   },
@@ -70,13 +80,12 @@ export default defineComponent({
     width: 100%;
     height: 32px;
     content: '';
-    background-image:
-      linear-gradient(
-        to bottom,
-        rgba(25, 25, 25, 1),
-        ease,
-        rgba(25, 25, 25, 0)
-      );
+    background-image: linear-gradient(
+      to bottom,
+      rgba(25, 25, 25, 1),
+      ease,
+      rgba(25, 25, 25, 0)
+    );
   }
 
   & > .container > .seats {
@@ -106,6 +115,35 @@ export default defineComponent({
 
   & > .container > .seats::-webkit-scrollbar-thumb:hover {
     background: rgba(134, 139, 196, 0.13);
+  }
+
+  & > .footer {
+    position: absolute;
+    bottom: 0;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+    box-sizing: border-box;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.6;
+  }
+
+  & > .footer > .logo {
+    flex-shrink: 0;
+    height: 24px;
+  }
+
+  & > .footer > .name {
+    color: #606d80;
+    font-size: 14px;
+    margin-left: 8px;
+    font-weight: bold;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 }
 

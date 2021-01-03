@@ -8,7 +8,10 @@
         },
         "audiences": {
           "$uid": {
-            ".write": "$uid === auth.uid"
+            ".write": "$uid === auth.uid",
+            "name": {
+              ".validate": "newData.isString() && newData.val().length <= 20 && newData.val().length > 0 && newData.val().matches(/^[\\x20\\u3000]*$/)"
+            }
           }
         }
       }
