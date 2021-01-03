@@ -19,7 +19,8 @@
     "rfdc": "^1.1.4",
     "taboverride": "^4.0.3",
     "throttle-debounce": "^3.0.1",
-    "vue-highlightjs": "^1.3.3"
+    "vue-highlightjs": "^1.3.3",
+    "vue-masonry-css": "^1.0.3"
   },
   "devDependencies": {
     "@lollipop-onl/vue-typed-reactive": "^1.0.7",

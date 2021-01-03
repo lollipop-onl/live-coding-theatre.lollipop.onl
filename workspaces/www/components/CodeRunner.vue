@@ -7,7 +7,7 @@
     </template>
     <template v-else>
       <template v-for="(result, i) in results">
-        <template v-if="result.type === 'answer'">
+        <template v-if="result.type === 'answer' && !hasError">
           <pre :key="i" v-highlightjs="result.value" class="block">
             <code class="code javascript" />
           </pre>
@@ -22,6 +22,7 @@
 
 <script lang="ts">
 import {
+  computed,
   defineComponent,
   onMounted,
   onUnmounted,
@@ -47,6 +48,10 @@ export default defineComponent({
     const token = ref('');
     const results = ref<any[]>([]);
     const runnerElement = ref<HTMLIFrameElement>();
+
+    const hasError = computed(() =>
+      results.value.some((result) => result.type === 'error')
+    );
 
     const onMessage = async (event: MessageEvent): Promise<void> => {
       if (event.data.token === token.value) {
@@ -154,6 +159,7 @@ export default defineComponent({
     );
 
     return {
+      hasError,
       results,
     };
   },

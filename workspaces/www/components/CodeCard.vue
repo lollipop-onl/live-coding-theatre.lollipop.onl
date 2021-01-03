@@ -1,11 +1,25 @@
 <template>
   <div class="codeCard">
-    <p>{{ audience.name }}</p>
-    <input v-model="isPretty" type="checkbox" />
+    <div class="header">
+      <div class="name">
+        <img class="icon" src="@/assets/images/icon-code.svg" alt="Code" />
+        <div class="text">by {{ audience.name }}</div>
+      </div>
+      <BaseCheckbox
+        v-model="isPretty"
+        class="format"
+        :class="{ Active: isPretty }"
+      >
+        <template #default="{ checked }">
+          <template v-if="checked">Formated</template>
+          <template v-else>Original</template>
+        </template>
+      </BaseCheckbox>
+    </div>
     <pre v-highlightjs="displayCode" class="highlight">
       <code class="code javascript" />
     </pre>
-    <CodeRunner :code="audience.code" :uid="audience.key" />
+    <CodeRunner class="result" :code="audience.code" :uid="audience.key" />
   </div>
 </template>
 
@@ -17,6 +31,7 @@ export default defineComponent({
   name: 'CodeCard',
   components: {
     CodeRunner: () => import('@/components/CodeRunner.vue'),
+    BaseCheckbox: () => import('@/components/BaseCheckbox.vue'),
   },
   props: {
     audience: {
@@ -52,6 +67,52 @@ export default defineComponent({
 
 <style lang="postcss" scoped>
 .codeCard {
+  background: #1a1b26;
+  border-top-left-radius: 12px;
+  box-shadow: 6px 6px 0 #111;
+  border: 2px solid #111;
+
+  & > .header {
+    display: flex;
+    align-items: center;
+    padding-right: 16px;
+  }
+
+  & > .header > .name {
+    align-items: center;
+    color: #ccc;
+    display: flex;
+  }
+
+  & > .header > .name > .icon {
+    height: 24px;
+    margin-right: 8px;
+  }
+
+  & > .header > .name > .text {
+    font-size: 12px;
+    font-weight: bold;
+  }
+
+  & > .header > .format {
+    font-size: 12px;
+    color: #aaa;
+    margin-left: auto;
+  }
+
+  & > .header > .format.Active {
+    color: #eee;
+  }
+
+  & > .highlight {
+    display: flex;
+    padding: 16px 16px 24px;
+    font-family: Fira Code, monospace;
+    word-break: break-all;
+    white-space: pre-wrap;
+    line-height: 1.5;
+  }
+
   /* stylelint-disable rscss/class-format, rscss/no-descendant-combinator */
   & > .highlight ::v-deep {
     .hljs-comment,

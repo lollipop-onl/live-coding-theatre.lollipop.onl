@@ -85,6 +85,7 @@ export default defineComponent({
 <style lang="postcss" scoped>
 .baseCheckbox {
   position: relative;
+  user-select: none;
 
   &:not(.Disabled) {
     cursor: pointer;
