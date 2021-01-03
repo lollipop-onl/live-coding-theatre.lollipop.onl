@@ -19,7 +19,7 @@ export default defineComponent({
     const onSubmit = async () => {
       const key = nanoid();
 
-      await app.$fire.database.ref('theatres').child(key).set({
+      await app.$fire.database.ref('theatres').child(key).child('meta').set({
         name: name.value,
       });
 

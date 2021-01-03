@@ -4,7 +4,21 @@
       <nuxt-child />
     </template>
     <template v-else>
-      <p>404 page not found</p>
+      <div class="pageContainer">
+        <div class="logo">
+          <img
+            class="image"
+            src="@/assets/images/logo2.svg"
+            alt="Live Coding Theatre"
+          />
+        </div>
+        <img
+          class="image"
+          src="@/assets/images/page-not-found.svg"
+          alt="Page Not Found"
+        />
+        <p class="message">Thie theatre is not found</p>
+      </div>
     </template>
   </div>
 </template>
@@ -42,7 +56,7 @@ export default defineComponent({
       { immediate: true }
     );
 
-    onMounted(() => {
+    onMounted(async () => {
       dbRef.on('value', (snapshot) => {
         isInitialized.value = true;
 
@@ -52,24 +66,30 @@ export default defineComponent({
           return;
         }
 
-        const theatre = snapshot.val();
-        const audiences = theatre.audiences
-          ? Object.entries(theatre.audiences)
-              .map(([key, value]: any) => ({ key, ...value }))
-              .sort((a: any, b: any) =>
-                a.enteredAt - b.enteredAt > 0 ? 1 : -1
-              )
-          : [];
+        const { meta = {}, audiences: audiencesData = {} } = snapshot.val();
+        const audiences = Object.entries(audiencesData)
+          .map(([key, value]: any) => ({ key, ...value }))
+          .sort((a: any, b: any) => (a.enteredAt - b.enteredAt > 0 ? 1 : -1));
 
         store.commit('theatre/setTheatre', {
           key: snapshot.key,
-          name: theatre.name,
-          message: theatre.message,
+          name: meta.name,
+          message: meta.message,
           audiences,
-          timerStartedAt: theatre.timerStartedAt,
-          timerSeconds: theatre.timerSeconds,
+          timerStartedAt: meta.timerStartedAt,
+          timerSeconds: meta.timerSeconds,
         });
       });
+
+      try {
+        const snapshot = await dbRef.get();
+
+        if (!snapshot.exists()) {
+          isInitialized.value = true;
+        }
+      } catch (err) {
+        isInitialized.value = true;
+      }
     });
 
     onUnmounted(() => {
@@ -84,3 +104,37 @@ export default defineComponent({
   head: {},
 });
 </script>
+
+<style lang="postcss" scoped>
+.pageContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  background: #ededed;
+
+  & > .logo {
+    filter: invert(74%) sepia(34%) saturate(1859%) hue-rotate(352deg)
+      brightness(97%) contrast(94%) drop-shadow(-2px 0 1px #886112);
+    margin-bottom: 16px;
+  }
+
+  & > .logo > img {
+    filter: invert(100%);
+  }
+
+  & > .image {
+    width: 640px;
+  }
+
+  & > .message {
+    margin-top: 36px;
+    color: #f1aa11;
+    font-weight: bold;
+    font-size: 24px;
+    text-shadow: 0 0 2px #eee2cb;
+  }
+}
+</style>

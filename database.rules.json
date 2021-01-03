@@ -2,13 +2,12 @@
   "rules": {
     "theatres": {
       "$theatreKey": {
+        ".read": true,
         "meta": {
-          ".read": true,
           ".write": true
         },
         "audiences": {
           "$uid": {
-            ".read": true,
             ".write": "$uid === auth.uid"
           }
         }

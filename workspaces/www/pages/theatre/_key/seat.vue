@@ -145,6 +145,7 @@ export default defineComponent({
   }
 
   & > .editor {
+    width: 100%;
     flex-grow: 1;
   }
 }
