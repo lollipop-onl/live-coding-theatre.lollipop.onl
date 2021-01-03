@@ -46,8 +46,8 @@ export default defineComponent({
 <style lang="postcss" scoped>
 .pageContainer {
   display: flex;
-  align-items: flex-start;
   flex-direction: column;
+  align-items: flex-start;
   height: 100vh;
   background: #191919;
 
@@ -57,10 +57,10 @@ export default defineComponent({
 
   & > .container {
     position: relative;
-    padding-top: 8px;
     flex-grow: 1;
     width: 100%;
     height: 100%;
+    padding-top: 8px;
     overflow: hidden;
   }
 
@@ -71,21 +71,22 @@ export default defineComponent({
     width: 100%;
     height: 32px;
     content: '';
-    background-image: linear-gradient(
-      to bottom,
-      rgba(25, 25, 25, 1),
-      ease,
-      rgba(25, 25, 25, 0)
-    );
+    background-image:
+      linear-gradient(
+        to bottom,
+        rgba(25, 25, 25, 1),
+        ease,
+        rgba(25, 25, 25, 0)
+      );
   }
 
   & > .container > .seats {
+    box-sizing: border-box;
     width: 100%;
     height: 100%;
     padding: 0 32px;
-    box-sizing: border-box;
-    overflow-y: auto;
     padding-bottom: 96px;
+    overflow-y: auto;
   }
 
   & > .container > .seats::-webkit-scrollbar {
