@@ -8,7 +8,6 @@
             <template v-if="audience.enteredAt != null">
               <CodeCard
                 :key="audience.key"
-                v-masonry-tile
                 class="seatItem"
                 :audience="audience"
               />
