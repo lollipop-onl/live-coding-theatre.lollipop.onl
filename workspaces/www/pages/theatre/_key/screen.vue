@@ -17,6 +17,10 @@
       </div>
     </div>
     <div class="footer">
+      <template v-if="timerMMSS">
+        <img src="@/assets/images/icon-timer.svg" alt="timer" class="icon" />
+        <p class="timer">{{ timerMMSS }}</p>
+      </template>
       <img
         src="@/assets/images/logo.svg"
         alt="Live Coding Theatre"
@@ -30,6 +34,7 @@
 <script lang="ts">
 import { computed, defineComponent } from '@nuxtjs/composition-api';
 import { useStore } from '@/helpers/typed-store';
+import { useTimerSeconds } from '@/helpers/useTimerSeconds';
 
 export default defineComponent({
   name: 'TheatreScreenPage',
@@ -39,14 +44,17 @@ export default defineComponent({
   },
   setup() {
     const store = useStore();
+    const timer = useTimerSeconds();
     const message = computed(() => store.state.theatre.message);
     const theatreName = computed(() => store.state.theatre.name);
     const audiences = computed(() => store.state.theatre.audiences);
+    const timerMMSS = computed(() => timer.mmss.value);
 
     return {
       message,
       theatreName,
       audiences,
+      timerMMSS,
     };
   },
 });
@@ -129,12 +137,24 @@ export default defineComponent({
     width: 100%;
     padding: 8px 16px;
     pointer-events: none;
-    opacity: 0.6;
+  }
+
+  & > .footer > .icon {
+    height: 16px;
+  }
+
+  & > .footer > .timer {
+    font-weight: bold;
+    font-size: 14px;
+    color: #4b4b4b;
+    margin-left: 4px;
+    margin-right: auto;
   }
 
   & > .footer > .logo {
     flex-shrink: 0;
     height: 24px;
+    opacity: 0.6;
   }
 
   & > .footer > .name {
@@ -145,6 +165,7 @@ export default defineComponent({
     color: #606d80;
     text-overflow: ellipsis;
     white-space: nowrap;
+    opacity: 0.6;
   }
 }
 
