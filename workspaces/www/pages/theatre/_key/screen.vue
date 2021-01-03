@@ -144,11 +144,11 @@ export default defineComponent({
   }
 
   & > .footer > .timer {
-    font-weight: bold;
-    font-size: 14px;
-    color: #4b4b4b;
-    margin-left: 4px;
     margin-right: auto;
+    margin-left: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #4b4b4b;
   }
 
   & > .footer > .logo {
