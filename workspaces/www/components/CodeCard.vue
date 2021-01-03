@@ -68,9 +68,9 @@ export default defineComponent({
 <style lang="postcss" scoped>
 .codeCard {
   background: #1a1b26;
+  border: 2px solid #111;
   border-top-left-radius: 12px;
   box-shadow: 6px 6px 0 #111;
-  border: 2px solid #111;
 
   & > .header {
     display: flex;
@@ -79,9 +79,9 @@ export default defineComponent({
   }
 
   & > .header > .name {
+    display: flex;
     align-items: center;
     color: #ccc;
-    display: flex;
   }
 
   & > .header > .name > .icon {
@@ -95,9 +95,9 @@ export default defineComponent({
   }
 
   & > .header > .format {
+    margin-left: auto;
     font-size: 12px;
     color: #aaa;
-    margin-left: auto;
   }
 
   & > .header > .format.Active {
@@ -108,9 +108,9 @@ export default defineComponent({
     display: flex;
     padding: 16px 16px 24px;
     font-family: Fira Code, monospace;
+    line-height: 1.5;
     word-break: break-all;
     white-space: pre-wrap;
-    line-height: 1.5;
   }
 
   /* stylelint-disable rscss/class-format, rscss/no-descendant-combinator */
