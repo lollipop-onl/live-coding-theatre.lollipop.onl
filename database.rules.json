@@ -1,0 +1,17 @@
+{
+  "rules": {
+    "theatres": {
+      "$theatreKey": {
+        ".read": true,
+        "meta": {
+          ".write": true
+        },
+        "audiences": {
+          "$uid": {
+            ".write": "$uid === auth.uid"
+          }
+        }
+      }
+    }
+  }
+}
