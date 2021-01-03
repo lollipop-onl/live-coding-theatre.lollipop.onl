@@ -52,7 +52,7 @@ export default defineComponent({
           return;
         }
 
-        displayCode.value = await formatCode(code);
+        displayCode.value = await formatCode(code, { printWidth: 40 });
       },
       { immediate: true }
     );
@@ -102,15 +102,16 @@ export default defineComponent({
 
   & > .header > .format.Active {
     color: #eee;
+    font-family: Fira Code, monospace;
   }
 
   & > .highlight {
     display: flex;
-    padding: 16px 16px 24px;
     font-family: Fira Code, monospace;
     word-break: break-all;
     white-space: pre-wrap;
     line-height: 1.5;
+    max-height: 240px;
   }
 
   /* stylelint-disable rscss/class-format, rscss/no-descendant-combinator */
@@ -180,5 +181,39 @@ export default defineComponent({
     }
   }
   /* stylelint-enable rscss/class-format, rscss/no-descendant-combinator */
+
+  & > .highlight > .code {
+    padding: 16px 16px 24px;
+    overflow-y: auto;
+    width: 100%;
+  }
+
+  & > .result {
+    max-height: 120px;
+    overflow-y: auto;
+  }
+
+  & > .highlight > .code::-webkit-scrollbar,
+  & > .result::-webkit-scrollbar {
+    width: 15px;
+    background: transparent;
+  }
+
+  & > .highlight > .code::-webkit-scrollbar-track,
+  & > .result::-webkit-scrollbar-track {
+    background: transparent;
+    border-left: 1px solid rgba(0, 0, 0, 0.3);
+  }
+
+  & > .highlight > .code::-webkit-scrollbar-thumb,
+  & > .result::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.06);
+    opacity: 0;
+  }
+
+  & > .highlight > .code::-webkit-scrollbar-thumb:hover,
+  & > .result::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
 }
 </style>
