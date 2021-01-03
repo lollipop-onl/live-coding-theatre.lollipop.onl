@@ -6,7 +6,7 @@
       v-bind="$attrs"
       @change="onChangeValue"
     >
-      <option value="" style="display: none;" selected disabled>
+      <option value="" style="display: none" selected disabled>
         {{ placeholder }}
       </option>
       <option

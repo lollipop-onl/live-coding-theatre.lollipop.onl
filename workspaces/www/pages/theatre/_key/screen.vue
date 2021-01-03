@@ -71,13 +71,12 @@ export default defineComponent({
     width: 100%;
     height: 32px;
     content: '';
-    background-image:
-      linear-gradient(
-        to bottom,
-        rgba(25, 25, 25, 1),
-        ease,
-        rgba(25, 25, 25, 0)
-      );
+    background-image: linear-gradient(
+      to bottom,
+      rgba(25, 25, 25, 1),
+      ease,
+      rgba(25, 25, 25, 0)
+    );
   }
 
   & > .container > .seats {
