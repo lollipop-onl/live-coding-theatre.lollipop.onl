@@ -101,18 +101,17 @@ export default defineComponent({
   }
 
   & > .header > .format.Active {
-    color: #eee;
     font-family: Fira Code, monospace;
+    color: #eee;
   }
 
   & > .highlight {
     display: flex;
+    max-height: 240px;
     font-family: Fira Code, monospace;
     line-height: 1.5;
     word-break: break-all;
     white-space: pre-wrap;
-    line-height: 1.5;
-    max-height: 240px;
   }
 
   /* stylelint-disable rscss/class-format, rscss/no-descendant-combinator */
@@ -184,9 +183,9 @@ export default defineComponent({
   /* stylelint-enable rscss/class-format, rscss/no-descendant-combinator */
 
   & > .highlight > .code {
+    width: 100%;
     padding: 16px 16px 24px;
     overflow-y: auto;
-    width: 100%;
   }
 
   & > .result {
