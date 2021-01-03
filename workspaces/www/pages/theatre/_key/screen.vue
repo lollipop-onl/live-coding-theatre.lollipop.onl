@@ -80,12 +80,13 @@ export default defineComponent({
     width: 100%;
     height: 32px;
     content: '';
-    background-image: linear-gradient(
-      to bottom,
-      rgba(25, 25, 25, 1),
-      ease,
-      rgba(25, 25, 25, 0)
-    );
+    background-image:
+      linear-gradient(
+        to bottom,
+        rgba(25, 25, 25, 1),
+        ease,
+        rgba(25, 25, 25, 0)
+      );
   }
 
   & > .container > .seats {
@@ -120,14 +121,14 @@ export default defineComponent({
   & > .footer {
     position: absolute;
     bottom: 0;
-    padding: 8px 16px;
+    z-index: 1;
+    box-sizing: border-box;
     display: flex;
     align-items: center;
     justify-content: flex-end;
     width: 100%;
-    box-sizing: border-box;
+    padding: 8px 16px;
     pointer-events: none;
-    z-index: 1;
     opacity: 0.6;
   }
 
@@ -137,13 +138,13 @@ export default defineComponent({
   }
 
   & > .footer > .name {
-    color: #606d80;
-    font-size: 14px;
     margin-left: 8px;
-    font-weight: bold;
     overflow: hidden;
-    white-space: nowrap;
+    font-size: 14px;
+    font-weight: bold;
+    color: #606d80;
     text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
 
