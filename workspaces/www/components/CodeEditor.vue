@@ -93,6 +93,8 @@ import {
   computed,
   defineComponent,
   onBeforeMount,
+  onMounted,
+  onUnmounted,
   ref,
   useContext,
   watch,
@@ -128,7 +130,7 @@ export default defineComponent({
       default: false,
     },
   },
-  setup(props, { emit }) {
+  setup(props, { emit, root }) {
     const { app, route } = useContext();
     const store = useStore();
     const timer = useTimerSeconds();
@@ -252,6 +254,14 @@ export default defineComponent({
       }
     };
 
+    const forceUpdate = () => {
+      if (!textareaRef.value) {
+        return;
+      }
+
+      localValue.value = textareaRef.value.value;
+    };
+
     watch(tabSize, () => {
       tabOverride.tabSize(tabSize.value);
 
@@ -283,6 +293,14 @@ export default defineComponent({
       if (savedLegature === 'false') {
         enableLigature.value = false;
       }
+    });
+
+    onMounted(() => {
+      window.addEventListener('keydown', forceUpdate);
+    });
+
+    onUnmounted(() => {
+      window.removeEventListener('keydown', forceUpdate);
     });
 
     return {
