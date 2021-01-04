@@ -130,7 +130,7 @@ export default defineComponent({
       default: false,
     },
   },
-  setup(props, { emit, root }) {
+  setup(props, { emit }) {
     const { app, route } = useContext();
     const store = useStore();
     const timer = useTimerSeconds();
