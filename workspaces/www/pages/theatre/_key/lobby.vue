@@ -187,8 +187,8 @@ export default defineComponent({
   & > .form > .name {
     margin-bottom: 16px;
     font-size: 32px;
-    color: #252521;
     line-height: 1.5;
+    color: #252521;
   }
 
   & > .form > .audiences {
