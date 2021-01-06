@@ -17,7 +17,7 @@
           src="@/assets/images/page-not-found.svg"
           alt="Page Not Found"
         />
-        <p class="message">Thie theatre is not found</p>
+        <p class="message">This theatre is not found</p>
       </div>
     </template>
   </div>

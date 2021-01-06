@@ -135,6 +135,7 @@ export default defineComponent({
             alert = () => { throw new Error('window.alert() の呼び出しは禁止されています。代わりに console.log() を使用してください。') };
             confirm = () => { throw new Error('window.confirm() の呼び出しは禁止されています。') };
             prompt = () => { throw new Error('window.prompt() の呼び出しは禁止されています。') };
+            eval = () => { throw new Error('eval() の呼び出しは禁止されています。') };
           <\/script>
 
           <script>
