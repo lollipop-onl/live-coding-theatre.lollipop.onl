@@ -68,9 +68,11 @@ export default defineComponent({
         }
 
         try {
-          event.data.value = await formatCode(event.data.value, {
+          const formatedValue = await formatCode(event.data.value, {
             semi: false,
           });
+
+          event.data.value = formatedValue.replace(/^;+/, '');
         } catch (err) {
           // do nothing.
         }
