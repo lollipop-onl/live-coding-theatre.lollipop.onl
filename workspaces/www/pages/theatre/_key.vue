@@ -117,8 +117,7 @@ export default defineComponent({
 
   & > .logo {
     margin-bottom: 16px;
-    filter:
-      invert(74%) sepia(34%) saturate(1859%) hue-rotate(352deg)
+    filter: invert(74%) sepia(34%) saturate(1859%) hue-rotate(352deg)
       brightness(97%) contrast(94%) drop-shadow(-2px 0 1px #886112);
   }
 
